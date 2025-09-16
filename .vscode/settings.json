@@ -1,0 +1,6 @@
+{
+  "github.copilot.chat.search.semanticTextResults": true,
+  "github.copilot.advanced": {},
+  "github.copilot.chat.experimental.codeFeedback.instructions": [],
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true
+}
