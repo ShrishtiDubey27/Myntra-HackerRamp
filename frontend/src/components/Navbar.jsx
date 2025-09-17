@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { assets } from "../assets/frontend_assets/assets";
 import { Link, NavLink } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
+import { WishlistContext } from "../context/WishlistContext";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -13,6 +14,7 @@ const Navbar = () => {
     setToken,
     setCartItems,
   } = useContext(ShopContext);
+  const { getWishlistCount } = useContext(WishlistContext);
 
   const logout = () => {
     navigate("/login");
@@ -62,6 +64,27 @@ const Navbar = () => {
           className="w-5 cursor-pointer"
           alt=""
         />
+
+        <Link to="/wishlist" className="relative">
+          <svg
+            className="w-6 h-6 cursor-pointer text-gray-700 hover:text-red-500 transition-colors"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            />
+          </svg>
+          {getWishlistCount() > 0 && (
+            <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-red-500 text-white aspect-square rounded-full text-[8px]">
+              {getWishlistCount()}
+            </p>
+          )}
+        </Link>
 
         <div className="group relative">
           <img

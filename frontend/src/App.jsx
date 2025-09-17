@@ -11,6 +11,7 @@ import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
 import Verify from "./pages/Verify";
 import ChatRoom from "./pages/ChatPage";
+import Wishlist from "./pages/Wishlist";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
@@ -25,8 +26,8 @@ const ScrollToTop = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // Reset virtual try-on state when navigating away from Collection page
-    if (pathname !== "/collection") {
+    // Reset virtual try-on state when navigating away from Collection or Wishlist page
+    if (pathname !== "/collection" && pathname !== "/wishlist") {
       sessionStorage.removeItem("activeModelId");
       // Trigger storage event to update all ProductItem components
       window.dispatchEvent(new Event("storage"));
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/product/:productId" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/login" element={<Login />} />
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
