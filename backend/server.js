@@ -7,7 +7,7 @@ import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai"; // Replaced OpenAI with GoogleGenerativeAI
 
 // App Config
 const app = express();
@@ -30,29 +30,42 @@ app.use("/api/order", orderRouter);
 // Root Route
 app.get("/", (req, res) => res.send("API Working"));
 
-// ---------- NEW ChatAI Endpoint with OpenAI ----------
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// ---------- NEW ChatAI Endpoint with Google Gemini (Conversational) ----------
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.post("/api/chatAI", async (req, res) => {
-  const { prompt } = req.body;
-  if (!prompt) return res.status(400).json({ error: "Prompt required" });
-
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        { role: "user", content: `You are a fashion expert. Answer this question: ${prompt}` }
-      ],
-    });
+    const { prompt, context } = req.body; // Expects prompt and chat history (context)
+    if (!prompt) {
+      return res.status(400).json({ error: 'Prompt is required' });
+    }
 
-    const botMessage = completion.choices[0].message.content;
-    res.json({ text: botMessage });
-  } catch (err) {
-    console.error("OpenAI API error:", err.message);
-    res.status(500).json({ text: "OpenAI API request failed!" });
+    // Build context string from message history for the AI
+    const contextString = context
+      .map(msg => `${msg.sender === 'user' ? 'User' : 'Bot'}: ${msg.text}`)
+      .join('\n');
+
+    const fullPrompt = `${contextString}\nUser: ${prompt}`;
+
+    // Send the full conversation history to Gemini
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    const result = await model.generateContent(fullPrompt);
+    const response = await result.response;
+    let text = response.text();
+    
+    // Clean up the response by removing the "Bot:" prefix if it exists
+    const botPrefix = /^bot[:\s-]*\s*/i;
+    if (botPrefix.test(text)) {
+      text = text.replace(botPrefix, '').trim();
+    }
+
+    res.json({ text });
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-// -------------------------------------------
+// -------------------------------------------------------------------------
 
 // Start Server
 app.listen(port, () => console.log("Server started on PORT:", port));
