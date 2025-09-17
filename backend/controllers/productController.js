@@ -15,21 +15,45 @@ const addProduct = async (req, res) => {
       bestseller,
     } = req.body;
 
-    const image1 = req.files.image1 && req.files.image1[0];
-    const image2 = req.files.image2 && req.files.image2[0];
-    const image3 = req.files.image3 && req.files.image3[0];
-    const image4 = req.files.image4 && req.files.image4[0];
+    if (!req.files) {
+      throw new Error("No images uploaded");
+    }
 
-    const images = [image1, image2, image3, image4].filter(
-      (item) => item !== undefined
-    );
+    // Create an array to store the image files and their IDs
+    const imageEntries = [];
 
-    let imagesUrl = await Promise.all(
-      images.map(async (item) => {
-        let result = await cloudinary.uploader.upload(item.path, {
-          resource_type: "image",
+    // Iterate over each possible image and its ID
+    for (let i = 1; i <= 6; i++) {
+      const imageKey = `image${i}`;
+      const imageIdKey = `imageId${i}`;
+
+      if (req.files[imageKey]) {
+        imageEntries.push({
+          file: req.files[imageKey][0],
+          id: req.body[imageIdKey] || `model${i - 1}`, // fallback ID if not provided
         });
-        return result.secure_url;
+      }
+    }
+
+    if (imageEntries.length === 0) {
+      throw new Error("At least one image is required");
+    }
+
+    // Upload images to cloudinary
+    let images = await Promise.all(
+      imageEntries.map(async (item) => {
+        try {
+          let result = await cloudinary.uploader.upload(item.file.path, {
+            resource_type: "image",
+          });
+          return {
+            url: result.secure_url,
+            id: item.id,
+          };
+        } catch (err) {
+          console.error("Cloudinary upload error:", err);
+          throw new Error(`Failed to upload image: ${err.message}`);
+        }
       })
     );
 
@@ -41,7 +65,7 @@ const addProduct = async (req, res) => {
       subCategory,
       bestSeller: bestseller,
       sizes: JSON.parse(sizes),
-      image: imagesUrl,
+      images: images,
       date: Date.now(),
     };
 
@@ -52,8 +76,8 @@ const addProduct = async (req, res) => {
 
     res.json({ success: true, message: "Product Added" });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    console.error("Product addition error:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 

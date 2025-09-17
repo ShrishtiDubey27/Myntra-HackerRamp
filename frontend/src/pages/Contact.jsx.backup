@@ -1,0 +1,605 @@
+import React from "react";import React from "react";import React from "react";
+
+import Title from "../components/Title";
+
+import { assets } from "../assets/frontend_assets/assets";import { assets } from "../assets/frontend_assets/assets";
+
+const Contact = () => {
+
+  return (import Title from "../components/Title";import Title from "../components/Ti    },
+
+    <div>
+
+      <div className="text-center text-2xl pt-10 border-t">    {
+
+        <Title text1={"OUR"} text2={"GOAL"}></Title>
+
+        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600 mt-4">const Contact = () => {      icon: "💬",
+
+          Transforming the future of online shopping through innovative AI-powered features.
+
+        </p>  const virtualTryOnImpacts = [      title: "TrendTalk",
+
+      </div>
+
+    </div>    {      description:
+
+  );
+
+};      icon: "📈",        "A social shopping platform where users can connect, share fashion experiences, and create communities. Transform online shopping from a lonely experience to a social one, just like shopping offline with friends.",
+
+
+
+export default Contact;      title: "Increase Sales",      benefits: [
+
+      description: "Virtual try-on increases conversion rates by 64%, as customers feel more confident purchasing products they can visualize on themselves.",        "Create Fashion-focused Channels",
+
+      stats: "64% higher conversion rate",        "Share Shopping Experiences",
+
+    },        "Connect with Like-minded Shoppers",
+
+    {        "Community-driven Style Advice",
+
+      icon: "📦",        "Real-time Fashion Discussions",
+
+      title: "Reduce Return Rates",        "Collaborative Shopping Sessions",
+
+      description: "By allowing customers to see how products look before purchase, returns are reduced by up to 40%, saving costs and improving satisfaction.",      ],
+
+      stats: "40% reduction in returns",    },Contact = () => {
+
+    },  const virtualTryOnImpacts = [
+
+    {    {
+
+      icon: "😊",      icon: "📈",
+
+      title: "Enhanced User Satisfaction",      title: "Increase Sales",
+
+      description: "Customers report 85% higher satisfaction when they can try products virtually, leading to better reviews and brand loyalty.",      description:
+
+      stats: "85% satisfaction increase",        "Virtual try-on increases conversion rates by 64%, as customers feel more confident purchasing products they can visualize on themselves.",
+
+    },      stats: "64% higher conversion rate",
+
+    {    },
+
+      icon: "⚡",    {
+
+      title: "Improved User Experience",      icon: "📦",
+
+      description: "Interactive features create engaging shopping experiences, increasing time spent on site by 150% and repeat purchases.",      title: "Reduce Return Rates",
+
+      stats: "150% longer engagement",      description:
+
+    },        "By allowing customers to see how products look before purchase, returns are reduced by up to 40%, saving costs and improving satisfaction.",
+
+    {      stats: "40% reduction in returns",
+
+      icon: "🎯",    },
+
+      title: "Efficient Shopping",    {
+
+      description: "Customers make purchase decisions 3x faster with virtual try-on, reducing browsing time while increasing purchase intent.",      icon: "😊",
+
+      stats: "3x faster decisions",      title: "Enhanced User Satisfaction",
+
+    },      description:
+
+    {        "Customers report 85% higher satisfaction when they can try products virtually, leading to better reviews and brand loyalty.",
+
+      icon: "🛍️",      stats: "85% satisfaction increase",
+
+      title: "Convenient Experience",    },
+
+      description: "Shop from anywhere, anytime with confidence. No need to visit physical stores or worry about sizing issues.",    {
+
+      stats: "24/7 accessibility",      icon: "⚡",
+
+    },      title: "Improved User Experience",
+
+  ];      description:
+
+        "Interactive features create engaging shopping experiences, increasing time spent on site by 150% and repeat purchases.",
+
+  const aiFeatures = [      stats: "150% longer engagement",
+
+    {    },
+
+      icon: "🤖",    {
+
+      title: "Talk to AI",      icon: "🎯",
+
+      description: "Our intelligent AI assistant provides instant support, product recommendations, and answers to your shopping questions.",      title: "Efficient Shopping",
+
+      benefits: [      description:
+
+        "24/7 Customer Support",        "Customers make purchase decisions 3x faster with virtual try-on, reducing browsing time while increasing purchase intent.",
+
+        "Personalized Recommendations",      stats: "3x faster decisions",
+
+        "Instant Problem Resolution",    },
+
+        "Smart Product Search",    {
+
+      ],      icon: "🛍️",
+
+    },      title: "Convenient Experience",
+
+    {      description:
+
+      icon: "💬",        "Shop from anywhere, anytime with confidence. No need to visit physical stores or worry about sizing issues.",
+
+      title: "TrendTalk",      stats: "24/7 accessibility",
+
+      description: "A social shopping platform where users can connect, share fashion experiences, and create communities. Transform online shopping from a lonely experience to a social one, just like shopping offline with friends.",    },
+
+      benefits: [  ];
+
+        "Create Fashion-focused Channels",
+
+        "Share Shopping Experiences",  const aiFeatures = [
+
+        "Connect with Like-minded Shoppers",    {
+
+        "Community-driven Style Advice",      icon: "🤖",
+
+        "Real-time Fashion Discussions",      title: "Talk to AI",
+
+        "Collaborative Shopping Sessions",      description:
+
+      ],        "Our intelligent AI assistant provides instant support, product recommendations, and answers to your shopping questions.",
+
+    },      benefits: [
+
+  ];        "24/7 Customer Support",
+
+        "Personalized Recommendations",
+
+  const industryImpact = [        "Instant Problem Resolution",
+
+    "Revolutionizes online fashion retail with immersive shopping experiences",        "Smart Product Search",
+
+    "Transforms solitary online shopping into social, community-driven experiences",      ],
+
+    "Sets new standards for customer engagement in e-commerce",    },
+
+    "Reduces environmental impact by minimizing returns and exchanges",  ];
+
+    "Bridges the gap between online and offline shopping experiences",
+
+    "Creates fashion communities that increase user engagement and retention",const Contact = () => {
+
+    "Enables data-driven insights for better inventory management",  const virtualTryOnImpacts = [
+
+    "Establishes new social commerce standards for the industry",    {
+
+  ];      icon: "📈",
+
+      title: "Increase Sales",
+
+  return (      description:
+
+    <div>        "Virtual try-on increases conversion rates by 64%, as customers feel more confident purchasing products they can visualize on themselves.",
+
+      <div className="text-center text-2xl pt-10 border-t">      stats: "64% higher conversion rate",
+
+        <Title text1={"OUR"} text2={"GOAL"}></Title>    },
+
+        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600 mt-4">    {
+
+          Transforming the future of online shopping through innovative AI-powered features that enhance customer experience and drive business success.      icon: "📦",
+
+        </p>      title: "Reduce Return Rates",
+
+      </div>      description:
+
+        "By allowing customers to see how products look before purchase, returns are reduced by up to 40%, saving costs and improving satisfaction.",
+
+      {/* Virtual Try-On Impact Section */}      stats: "40% reduction in returns",
+
+      <div className="my-16">    },
+
+        <div className="text-center mb-12">    {
+
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Virtual Try-On Impact</h2>      icon: "😊",
+
+          <p className="text-gray-600 max-w-3xl mx-auto">      title: "Enhanced User Satisfaction",
+
+            Our virtual try-on technology revolutionizes online shopping by providing customers with confidence and businesses with measurable results.      description:
+
+          </p>        "Customers report 85% higher satisfaction when they can try products virtually, leading to better reviews and brand loyalty.",
+
+        </div>      stats: "85% satisfaction increase",
+
+    },
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">    {
+
+          {virtualTryOnImpacts.map((impact, index) => (      icon: "⚡",
+
+            <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">      title: "Improved User Experience",
+
+              <div className="text-4xl mb-4">{impact.icon}</div>      description:
+
+              <h3 className="text-xl font-bold text-gray-800 mb-2">{impact.title}</h3>        "Interactive features create engaging shopping experiences, increasing time spent on site by 150% and repeat purchases.",
+
+              <p className="text-gray-600 mb-4">{impact.description}</p>      stats: "150% longer engagement",
+
+              <div className="bg-orange-50 rounded-lg p-3">    },
+
+                <span className="text-orange-600 font-semibold">{impact.stats}</span>    {
+
+              </div>      icon: "🎯",
+
+            </div>      title: "Efficient Shopping",
+
+          ))}      description:
+
+        </div>        "Customers make purchase decisions 3x faster with virtual try-on, reducing browsing time while increasing purchase intent.",
+
+      </div>      stats: "3x faster decisions",
+
+    },
+
+      {/* TrendTalk Social Shopping Section */}    {
+
+      <div className="bg-gradient-to-r from-pink-50 to-purple-50 py-16 mb-16 rounded-lg mx-4">      icon: "🛍️",
+
+        <div className="text-center mb-12">      title: "Convenient Experience",
+
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">TrendTalk: Social Shopping Revolution</h2>      description:
+
+          <p className="text-gray-600 max-w-3xl mx-auto">        "Shop from anywhere, anytime with confidence. No need to visit physical stores or worry about sizing issues.",
+
+            TrendTalk transforms the isolated online shopping experience into a vibrant social community where fashion enthusiasts connect, share, and shop together.      stats: "24/7 accessibility",
+
+          </p>    },
+
+        </div>  ];
+
+
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6">  const aiFeatures = [
+
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">    {
+
+            <div className="text-4xl mb-4">🏪</div>      icon: "🤖",
+
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Fashion Channels</h3>      title: "Talk to AI",
+
+            <p className="text-gray-600">Create and join channels based on style preferences, brands, or fashion categories. Build your fashion community!</p>      description:
+
+          </div>        "Our intelligent AI assistant provides instant support, product recommendations, and answers to your shopping questions.",
+
+                benefits: [
+
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">        "24/7 Customer Support",
+
+            <div className="text-4xl mb-4">💬</div>        "Personalized Recommendations",
+
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Share Experiences</h3>        "Instant Problem Resolution",
+
+            <p className="text-gray-600">Post outfit reviews, styling tips, and shopping hauls. Get real feedback from your fashion community.</p>        "Smart Product Search",
+
+          </div>      ],
+
+              },
+
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">    {
+
+            <div className="text-4xl mb-4">👥</div>      icon: "�",
+
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Shop Together</h3>      title: "TrendTalk",
+
+            <p className="text-gray-600">Recreate the offline group shopping experience online. Make decisions together, get instant opinions!</p>      description:
+
+          </div>        "A social shopping platform where users can connect, share fashion experiences, and create communities. Transform online shopping from a lonely experience to a social one, just like shopping offline with friends.",
+
+                benefits: [
+
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">        "Create Fashion-focused Channels",
+
+            <div className="text-4xl mb-4">⏰</div>        "Share Shopping Experiences",
+
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Increase Engagement</h3>        "Connect with Like-minded Shoppers",
+
+            <p className="text-gray-600">Users spend 3x more time on social shopping platforms, leading to higher satisfaction and sales.</p>        "Community-driven Style Advice",
+
+          </div>        "Real-time Fashion Discussions",
+
+                  "Collaborative Shopping Sessions",
+
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">      ],
+
+            <div className="text-4xl mb-4">🎯</div>    },
+
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Style Communities</h3>  ];
+
+            <p className="text-gray-600">Join communities for minimalist, streetwear, luxury, vintage, or any fashion style that matches your taste.</p>
+
+          </div>  const industryImpact = [
+
+              "Revolutionizes online fashion retail with immersive shopping experiences",
+
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">    "Transforms solitary online shopping into social, community-driven experiences",
+
+            <div className="text-4xl mb-4">🔥</div>    "Sets new standards for customer engagement in e-commerce",
+
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Trend Discovery</h3>    "Reduces environmental impact by minimizing returns and exchanges",
+
+            <p className="text-gray-600">Discover emerging trends through community discussions and real user posts, not just algorithms.</p>    "Bridges the gap between online and offline shopping experiences",
+
+          </div>    "Creates fashion communities that increase user engagement and retention",
+
+        </div>    "Enables data-driven insights for better inventory management",
+
+      </div>    "Establishes new social commerce standards for the industry",
+
+  ];
+
+      {/* AI Features Section */}
+
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 py-16 mb-16 rounded-lg mx-4">  return (
+
+        <div className="text-center mb-12">    <div>
+
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Talk to AI Assistant</h2>      <div className="text-center text-2xl pt-10 border-t">
+
+          <p className="text-gray-600 max-w-3xl mx-auto">        <Title text1={"OUR"} text2={"GOAL"}></Title>
+
+            Experience the power of artificial intelligence in your shopping journey. Our AI assistant is here to help you every step of the way.        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600 mt-4">
+
+          </p>          Transforming the future of online shopping through innovative
+
+        </div>          AI-powered features that enhance customer experience and drive
+
+          business success.
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-6">        </p>
+
+          {aiFeatures.map((feature, index) => (      </div>
+
+            <div key={index} className="bg-white rounded-lg shadow-lg p-8">
+
+              <div className="flex items-center mb-4">      {/* Virtual Try-On Impact Section */}
+
+                <div className="text-4xl mr-4">{feature.icon}</div>      <div className="my-16">
+
+                <h3 className="text-2xl font-bold text-gray-800">{feature.title}</h3>        <div className="text-center mb-12">
+
+              </div>          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+
+              <p className="text-gray-600 mb-6">{feature.description}</p>            Virtual Try-On Impact
+
+              <div className="space-y-2">          </h2>
+
+                {feature.benefits.map((benefit, idx) => (          <p className="text-gray-600 max-w-3xl mx-auto">
+
+                  <div key={idx} className="flex items-center">            Our virtual try-on technology revolutionizes online shopping by
+
+                    <span className="text-green-500 mr-2">✓</span>            providing customers with confidence and businesses with measurable
+
+                    <span className="text-gray-700">{benefit}</span>            results.
+
+                  </div>          </p>
+
+                ))}        </div>
+
+              </div>
+
+            </div>        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+
+          ))}          {virtualTryOnImpacts.map((impact, index) => (
+
+        </div>            <div
+
+      </div>              key={index}
+
+              className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+
+      {/* Industry Impact Section */}            >
+
+      <div className="my-16">              <div className="text-4xl mb-4">{impact.icon}</div>
+
+        <div className="text-center mb-12">              <h3 className="text-xl font-bold text-gray-800 mb-2">
+
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Industry Transformation</h2>                {impact.title}
+
+          <p className="text-gray-600 max-w-3xl mx-auto">              </h3>
+
+            Our innovative features are reshaping the e-commerce landscape and setting new standards for online retail.              <p className="text-gray-600 mb-4">{impact.description}</p>
+
+          </p>              <div className="bg-orange-50 rounded-lg p-3">
+
+        </div>                <span className="text-orange-600 font-semibold">
+
+                  {impact.stats}
+
+        <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-8 mx-4">                </span>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">              </div>
+
+            {industryImpact.map((impact, index) => (            </div>
+
+              <div key={index} className="flex items-start space-x-3">          ))}
+
+                <div className="flex-shrink-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">        </div>
+
+                  {index + 1}      </div>
+
+                </div>
+
+                <p className="text-gray-700">{impact}</p>      {/* AI Features Section */}
+
+              </div>      <div className="bg-gradient-to-r from-blue-50 to-purple-50 py-16 mb-16 rounded-lg mx-4">
+
+            ))}        <div className="text-center mb-12">
+
+          </div>          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+
+        </div>            AI-Powered Features
+
+      </div>          </h2>
+
+          <p className="text-gray-600 max-w-3xl mx-auto">
+
+      {/* Future Vision Section */}            Beyond virtual try-on, our platform integrates advanced AI features
+
+      <div className="bg-gradient-to-r from-gray-900 to-gray-700 text-white py-16 mb-16 rounded-lg mx-4">            to provide comprehensive shopping assistance.
+
+        <div className="text-center">          </p>
+
+          <h2 className="text-2xl font-bold mb-4">Our Vision for the Future</h2>        </div>
+
+          <p className="text-gray-300 max-w-3xl mx-auto mb-8">
+
+            We envision a world where online shopping is as intuitive and satisfying as in-person experiences, powered by AI that understands and anticipates customer needs.        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-6">
+
+          </p>          {aiFeatures.map((feature, index) => (
+
+          <div className="flex flex-wrap justify-center gap-4">            <div key={index} className="bg-white rounded-lg shadow-lg p-8">
+
+            <div className="bg-white bg-opacity-10 rounded-lg p-4">              <div className="flex items-center mb-4">
+
+              <div className="text-2xl font-bold text-orange-400">50M+</div>                <div className="text-4xl mr-4">{feature.icon}</div>
+
+              <div className="text-sm">Future Users</div>                <h3 className="text-2xl font-bold text-gray-800">
+
+            </div>                  {feature.title}
+
+            <div className="bg-white bg-opacity-10 rounded-lg p-4">                </h3>
+
+              <div className="text-2xl font-bold text-orange-400">90%</div>              </div>
+
+              <div className="text-sm">Satisfaction Target</div>              <p className="text-gray-600 mb-6">{feature.description}</p>
+
+            </div>              <div className="space-y-2">
+
+            <div className="bg-white bg-opacity-10 rounded-lg p-4">                {feature.benefits.map((benefit, idx) => (
+
+              <div className="text-2xl font-bold text-orange-400">Zero</div>                  <div key={idx} className="flex items-center">
+
+              <div className="text-sm">Return Disappointments</div>                    <span className="text-green-500 mr-2">✓</span>
+
+            </div>                    <span className="text-gray-700">{benefit}</span>
+
+          </div>                  </div>
+
+        </div>                ))}
+
+      </div>              </div>
+
+    </div>            </div>
+
+  );          ))}
+
+};        </div>
+
+      </div>
+
+export default Contact;
+      {/* Social Shopping Revolution Section */}
+      <div className="bg-gradient-to-r from-pink-50 to-purple-50 py-16 mb-16 rounded-lg mx-4">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Social Shopping Revolution</h2>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            TrendTalk transforms the isolated online shopping experience into a vibrant social community where fashion enthusiasts connect, share, and shop together.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6">
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="text-4xl mb-4">🏪</div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Fashion Channels</h3>
+            <p className="text-gray-600">Create and join channels based on style preferences, brands, or fashion categories. Build your fashion community!</p>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="text-4xl mb-4">💬</div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Share Experiences</h3>
+            <p className="text-gray-600">Post outfit reviews, styling tips, and shopping hauls. Get real feedback from your fashion community.</p>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="text-4xl mb-4">👥</div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Shop Together</h3>
+            <p className="text-gray-600">Recreate the offline group shopping experience online. Make decisions together, get instant opinions!</p>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="text-4xl mb-4">⏰</div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Increase Engagement</h3>
+            <p className="text-gray-600">Users spend 3x more time on social shopping platforms, leading to higher satisfaction and sales.</p>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="text-4xl mb-4">🎯</div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Style Communities</h3>
+            <p className="text-gray-600">Join communities for minimalist, streetwear, luxury, vintage, or any fashion style that matches your taste.</p>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="text-4xl mb-4">🔥</div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Trend Discovery</h3>
+            <p className="text-gray-600">Discover emerging trends through community discussions and real user posts, not just algorithms.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Industry Impact Section */}
+      <div className="my-16">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Industry Transformation
+          </h2>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            Our innovative features are reshaping the e-commerce landscape and
+            setting new standards for online retail.
+          </p>
+        </div>
+
+        <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-8 mx-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {industryImpact.map((impact, index) => (
+              <div key={index} className="flex items-start space-x-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  {index + 1}
+                </div>
+                <p className="text-gray-700">{impact}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Future Vision Section */}
+      <div className="bg-gradient-to-r from-gray-900 to-gray-700 text-white py-16 mb-16 rounded-lg mx-4">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Our Vision for the Future</h2>
+          <p className="text-gray-300 max-w-3xl mx-auto mb-8">
+            We envision a world where online shopping is as intuitive and
+            satisfying as in-person experiences, powered by AI that understands
+            and anticipates customer needs.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <div className="bg-white bg-opacity-10 rounded-lg p-4">
+              <div className="text-2xl font-bold text-orange-400">50M+</div>
+              <div className="text-sm">Future Users</div>
+            </div>
+            <div className="bg-white bg-opacity-10 rounded-lg p-4">
+              <div className="text-2xl font-bold text-orange-400">90%</div>
+              <div className="text-sm">Satisfaction Target</div>
+            </div>
+            <div className="bg-white bg-opacity-10 rounded-lg p-4">
+              <div className="text-2xl font-bold text-orange-400">Zero</div>
+              <div className="text-sm">Return Disappointments</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Contact;

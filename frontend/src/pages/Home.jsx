@@ -1,10 +1,9 @@
-import React from 'react';
-import Hero from '../components/Hero';
-import VirtualTryOn from '../components/VirtualTryOn';
-import LatestCollection from '../components/LatestCollection';
-import BestSeller from '../components/BestSeller';
-import OurPolicy from '../components/OurPolicy';
-import NewsletterBox from '../components/NewsletterBox';
+import React from "react";
+import Hero from "../components/Hero";
+import VirtualTryOn from "../components/VirtualTryOn";
+import LatestCollection from "../components/LatestCollection";
+import BestSeller from "../components/BestSeller";
+import OurPolicy from "../components/OurPolicy";
 
 const Home = () => {
   return (
@@ -28,10 +27,6 @@ const Home = () => {
 
       <div className="rounded-lg shadow-md overflow-hidden">
         <OurPolicy />
-      </div>
-
-      <div className="rounded-lg shadow-md overflow-hidden">
-        <NewsletterBox />
       </div>
     </div>
   );

@@ -73,6 +73,9 @@ import razorpay_logo from "./razorpay_logo.png";
 import stripe_logo from "./stripe_logo.png";
 import cross_icon from "./cross_icon.png";
 import chat_icon from "./chat_icon.png";
+import hema from "./hema.png";
+import shri from "./shri.png";
+import sanchu from "./sanchu.png";
 
 export const assets = {
   logo,
@@ -94,6 +97,9 @@ export const assets = {
   stripe_logo,
   cross_icon,
   chat_icon,
+  hema,
+  shri,
+  sanchu,
 };
 
 export const products = [
