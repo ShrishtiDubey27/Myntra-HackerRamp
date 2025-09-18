@@ -1,20 +1,21 @@
 import mongoose from "mongoose";
+import chatDb from "../config/chatdb.js";
 
-const userSchema = new mongoose.Schema(
+const chatUserSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    cartData: { type: Object, default: {} },
     image: { type: String, default: "" },
     profileSetup: { type: Boolean, default: false },
     firstName: { type: String, default: "" },
     lastName: { type: String, default: "" },
     color: { type: Number, default: 0 },
+    lastSeen: { type: Date, default: Date.now },
+    isOnline: { type: Boolean, default: false },
   },
-  { minimize: false }
+  { timestamps: true }
 );
 
-const UserModel = mongoose.models.user || mongoose.model("user", userSchema);
-
-export default UserModel;
+const ChatUser = chatDb.model("Users", chatUserSchema);
+export default ChatUser;

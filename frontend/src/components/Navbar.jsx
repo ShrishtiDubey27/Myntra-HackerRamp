@@ -14,17 +14,27 @@ const Navbar = () => {
     token,
     setToken,
     setCartItems,
+    backendUrl,
   } = useContext(ShopContext);
   const { getWishlistCount } = useContext(WishlistContext);
 
   // Check if current page is collection page
-  const isCollectionPage = location.pathname === '/collection';
+  const isCollectionPage = location.pathname === "/collection";
 
   const logout = () => {
     navigate("/login");
     localStorage.removeItem("token");
     setToken("");
     setCartItems({});
+  };
+
+  const handleChatClick = () => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    // Navigate directly to chat page
+    navigate("/chat");
   };
 
   return (
@@ -55,12 +65,18 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-6">
-        <img
-          onClick={() => navigate("/chat")}
-          src={assets.chat_icon}
-          className="w-5 cursor-pointer"
-          alt="chat"
-        />
+        <div className="relative group">
+          <img
+            onClick={handleChatClick}
+            src={assets.chat_icon}
+            className="w-5 cursor-pointer hover:scale-110 transition-transform"
+            alt="TrendTalk - Direct Messages"
+            title="TrendTalk - Direct Messages"
+          />
+          <div className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            TrendTalk
+          </div>
+        </div>
 
         {isCollectionPage && (
           <img
@@ -184,8 +200,19 @@ const Navbar = () => {
           >
             OUR GOAL
           </NavLink>
+          <div
+            onClick={() => {
+              handleChatClick();
+              setVisible(false);
+            }}
+            className="py-2 pl-6 border cursor-pointer hover:bg-gray-50"
+          >
+            TRENTTALK
+          </div>
         </div>
       </div>
+
+      {/* Chat Profile Setup Modal - No longer needed */}
     </div>
   );
 };

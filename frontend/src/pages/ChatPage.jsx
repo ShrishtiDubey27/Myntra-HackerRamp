@@ -1,57 +1,237 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ChatHeader from "./ChatHeader";
 import { useNavigate } from "react-router-dom";
+import { ChatProvider, useChatContext } from "../context/ChatContext.jsx";
+import AddDMModal from "../components/AddDMModal";
+import CreateChannelModal from "../components/CreateChannelModal";
+import ProfileSection from "../components/ProfileSection";
+import MessageInput from "../components/MessageInput.jsx";
+import MessageComponent from "../components/MessageComponent.jsx";
+import UnreadIndicator from "../components/UnreadIndicator.jsx";
+import ProfileImage from "../components/ProfileImage.jsx";
+import {
+  getContactsForDMList,
+  getUserChannels,
+  getMessages,
+  getChannelMessages,
+} from "../utils/chatAPI.js";
 
-const Chat = () => {
-  const [channels, setChannels] = useState([
-    { id: 1, name: "HipHop Vibes Lounge", avatar: "https://i.pravatar.cc/40?img=1", description: "Let's vibe to hiphop beats" },
-    { id: 2, name: "GENZ Squad ✨", avatar: "https://i.pravatar.cc/40?img=2", description: "GenZ talk zone" },
-    { id: 3, name: "Goth Aesthetic", avatar: "https://i.pravatar.cc/40?img=3", description: "Dark vibes and aesthetics" },
-    { id: 4, name: "Girly Talk 💅", avatar: "https://i.pravatar.cc/40?img=4", description: "Fun girly chat" },
-    { id: 5, name: "Couture Collective 👗", avatar: "https://i.pravatar.cc/40?img=5", description: "Fashion discussions" },
-  ]);
-
-  const [contacts, setContacts] = useState([
-    { id: 6, name: "Arjun Mehta", lastMessage: "Yo what's up?", avatar: "https://i.pravatar.cc/40?img=6" },
-    { id: 7, name: "Priya Sharma", lastMessage: "Let's meet tomorrow!", avatar: "https://i.pravatar.cc/40?img=7" },
-    { id: 8, name: "Rohan Kapoor", lastMessage: "Did you check that link?", avatar: "https://i.pravatar.cc/40?img=8" },
-    { id: 9, name: "Ananya Rao", lastMessage: "Haha that's funny 😂", avatar: "https://i.pravatar.cc/40?img=9" },
-    { id: 10, name: "Vikram Singh", lastMessage: "Working on project rn...", avatar: "https://i.pravatar.cc/40?img=10" },
-  ]);
-
-  const [activeChat, setActiveChat] = useState(channels[0]);
+const ChatContent = () => {
   const navigate = useNavigate();
+  const {
+    chatUser,
+    selectedChatType,
+    setSelectedChatType,
+    selectedChatData,
+    setSelectedChatData,
+    selectedChatMessages,
+    setSelectedChatMessages,
+    directMessagesContacts,
+    setDirectMessagesContacts,
+    channels,
+    setChannels,
+    socket,
+    markChatAsRead,
+  } = useChatContext();
 
-  const [messages, setMessages] = useState([
-    { id: 1, sender: "bot", text: "Welcome to HipHop Vibes Lounge 🎶" },
-    { id: 2, sender: "me", text: "Hey, let's vibe!" },
-  ]);
+  const [showAddDMModal, setShowAddDMModal] = useState(false);
+  const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const messagesEndRef = useRef(null);
 
-  const [input, setInput] = useState("");
+  // Fetch initial data
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!chatUser) return;
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
-    const newMessage = { id: Date.now(), sender: "me", text: input };
-    setMessages([...messages, newMessage]);
-    setInput("");
+      setIsLoading(true);
+      try {
+        // Fetch DM contacts and channels
+        const [dmResponse, channelsResponse] = await Promise.all([
+          getContactsForDMList(),
+          getUserChannels(),
+        ]);
 
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { id: Date.now(), sender: "bot", text: `Replying in ${activeChat.name} ✨` }]);
-    }, 1000);
-  };
+        setDirectMessagesContacts(dmResponse.contacts || []);
+        setChannels(channelsResponse.channels || []);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const updateGroupInfo = () => {
-    const name = prompt("Update group/contact name:", activeChat.name);
-    const desc = activeChat.type === "channel" ? prompt("Update description:", activeChat.description) : "";
-    setActiveChat((prev) => ({ ...prev, name: name || prev.name, description: desc || prev.description }));
-    if (activeChat.type === "channel") {
-      setChannels((prev) =>
-        prev.map((ch) => (ch.id === activeChat.id ? { ...ch, name: name || ch.name, description: desc || ch.description } : ch))
-      );
-    } else {
-      setContacts((prev) => prev.map((c) => (c.id === activeChat.id ? { ...c, name: name || c.name } : c)));
+    fetchData();
+  }, [chatUser]);
+
+  // Scroll to bottom when messages change or chat is selected
+  useEffect(() => {
+    scrollToBottom();
+  }, [selectedChatMessages, selectedChatData]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // Alternative immediate scroll function
+  const scrollToBottomImmediate = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+    }
+  };
+
+  const handleContactSelect = async (contact, type) => {
+    setSelectedChatType(type);
+    setSelectedChatData(contact);
+
+    try {
+      if (type === "contact") {
+        const response = await getMessages(contact._id);
+        setSelectedChatMessages(response.messages || []);
+      } else if (type === "channel") {
+        const response = await getChannelMessages(contact._id);
+        setSelectedChatMessages(response.messages || []);
+      }
+
+      // Force scroll to bottom after a short delay to ensure messages are rendered
+      setTimeout(() => {
+        scrollToBottomImmediate(); // Use immediate scroll for new chat opening
+      }, 100);
+    } catch (error) {
+      console.error("Failed to fetch messages:", error);
+      setSelectedChatMessages([]);
+    }
+  };
+
+  // Separate function to handle marking messages as read when chat is opened
+  const handleChatOpened = (contactId) => {
+    if (markChatAsRead) {
+      markChatAsRead(contactId);
+    }
+  };
+
+  const sendMessage = () => {
+    if (!input.trim() || !socket.current) return;
+
+    const messageData = {
+      content: input,
+      messageType: "text",
+      timestamp: new Date(),
+    };
+
+    if (selectedChatType === "contact") {
+      socket.current.emit("sendMessage", {
+        ...messageData,
+        sender: chatUser.id,
+        recipient: selectedChatData._id,
+      });
+    } else if (selectedChatType === "channel") {
+      socket.current.emit("send-channel-message", {
+        ...messageData,
+        sender: chatUser.id,
+        channelId: selectedChatData._id,
+      });
+    }
+  };
+
+  const handleAddDM = (contact) => {
+    // Add to DM list if not already present
+    const exists = directMessagesContacts.find((c) => c._id === contact._id);
+    if (!exists) {
+      const newContact = {
+        ...contact,
+        lastMessage: null,
+      };
+      setDirectMessagesContacts((prev) => [newContact, ...prev]);
+    }
+
+    // Select the contact
+    handleContactSelect(contact, "contact");
+  };
+
+  const handleChannelCreated = (channel) => {
+    setChannels((prev) => [channel, ...prev]);
+    handleContactSelect(channel, "channel");
+
+    // Notify other users
+    if (socket.current) {
+      socket.current.emit("add-channel-notify", channel);
+    }
+  };
+
+  const handleMarkAsRead = (senderId) => {
+    // This will be called when user clicks on a chat to open it
+    handleChatOpened(senderId);
+  };
+
+  const getDisplayName = (contact) => {
+    if (contact.firstName && contact.lastName) {
+      return `${contact.firstName} ${contact.lastName}`;
+    }
+    if (contact.name) {
+      return contact.name;
+    }
+    return contact.email || "Unknown";
+  };
+
+  const getContactAvatar = (contact) => {
+    if (contact.image) {
+      return (
+        <img
+          src={contact.image}
+          alt={getDisplayName(contact)}
+          className="w-8 h-8 rounded-full"
+        />
+      );
+    }
+
+    const avatarColors = [
+      "bg-red-500",
+      "bg-blue-500",
+      "bg-green-500",
+      "bg-yellow-500",
+      "bg-purple-500",
+      "bg-pink-500",
+    ];
+    const colorClass = avatarColors[contact.color] || "bg-gray-500";
+    const initials = getDisplayName(contact)
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+
+    return (
+      <div
+        className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${colorClass}`}
+      >
+        {initials}
+      </div>
+    );
+  };
+
+  if (!chatUser) {
+    return (
+      <div className="flex h-screen bg-gray-100 items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading chat...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen bg-gray-100 items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading conversations...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden fixed inset-0 font-sans">
@@ -67,113 +247,168 @@ const Chat = () => {
           </button>
         </div>
 
-        {/* Create Group / Add DM Buttons */}
+        {/* Action Buttons */}
         <div className="flex flex-col p-2 gap-2 border-b">
           <button
-            onClick={() => {
-              const name = prompt("Enter new group name:");
-              if (name)
-                setChannels([
-                  ...channels,
-                  { id: Date.now(), name, avatar: "https://i.pravatar.cc/40?img=11", description: "" },
-                ]);
-            }}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg transition"
+            onClick={() => setShowCreateChannelModal(true)}
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg transition flex items-center justify-center gap-2"
           >
-            ➕ Create Group
+            ➕ Create Channel
           </button>
           <button
-            onClick={() => {
-              const name = prompt("Enter contact name:");
-              if (name) setContacts([...contacts, { id: Date.now(), name, lastMessage: "", avatar: "https://i.pravatar.cc/40?img=12" }]);
-            }}
-            className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition"
+            onClick={() => setShowAddDMModal(true)}
+            className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition flex items-center justify-center gap-2"
           >
             ➕ Add DM
           </button>
         </div>
 
-        {/* Channels */}
+        {/* Chat Lists */}
         <div className="flex-1 overflow-y-auto mt-2">
-          <div className="p-3 text-gray-400 uppercase text-xs">Groups</div>
-          {channels.map((ch) => (
-            <div
-              key={ch.id}
-              onClick={() => setActiveChat({ ...ch, type: "channel" })}
-              className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-700 rounded-lg mx-2 mb-1 truncate ${
-                activeChat.type === "channel" && activeChat.id === ch.id ? "bg-orange-500 text-white" : "text-gray-300"
-              }`}
+          {/* Channels */}
+          <div className="p-3 text-gray-400 uppercase text-xs">Channels</div>
+          {channels.map((channel) => (
+            <UnreadIndicator
+              key={channel._id}
+              contactId={channel._id}
+              onMarkAsRead={handleMarkAsRead}
+              isSelected={
+                selectedChatType === "channel" &&
+                selectedChatData?._id === channel._id
+              }
             >
-              <img src={ch.avatar} alt={ch.name} className="w-8 h-8 rounded-full" />
-              <span className="truncate">{ch.name}</span>
-            </div>
+              <div
+                onClick={() => handleContactSelect(channel, "channel")}
+                className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-700 rounded-lg mx-2 mb-1 truncate ${
+                  selectedChatType === "channel" &&
+                  selectedChatData?._id === channel._id
+                    ? "bg-orange-500 text-white"
+                    : "text-gray-300"
+                }`}
+              >
+                <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                  #
+                </div>
+                <span className="truncate">{channel.name}</span>
+              </div>
+            </UnreadIndicator>
           ))}
 
-          <div className="p-3 text-gray-400 uppercase text-xs mt-4">Direct Messages</div>
-          {contacts.map((c) => (
-            <div
-              key={c.id}
-              onClick={() => setActiveChat({ ...c, type: "dm" })}
-              className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-700 rounded-lg mx-2 mb-1 ${
-                activeChat.type === "dm" && activeChat.id === c.id ? "bg-orange-500 text-white" : "text-gray-300"
-              }`}
+          {/* Direct Messages */}
+          <div className="p-3 text-gray-400 uppercase text-xs mt-4">
+            Direct Messages
+          </div>
+          {directMessagesContacts.map((contact) => (
+            <UnreadIndicator
+              key={contact._id}
+              contactId={contact._id}
+              onMarkAsRead={handleMarkAsRead}
+              isSelected={
+                selectedChatType === "contact" &&
+                selectedChatData?._id === contact._id
+              }
             >
-              <img src={c.avatar} alt={c.name} className="w-8 h-8 rounded-full" />
-              <div className="flex flex-col overflow-hidden">
-                <span className="font-medium truncate">{c.name}</span>
-                <span className="text-xs text-gray-400 truncate">{c.lastMessage}</span>
+              <div
+                onClick={() => handleContactSelect(contact, "contact")}
+                className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-700 rounded-lg mx-2 mb-1 ${
+                  selectedChatType === "contact" &&
+                  selectedChatData?._id === contact._id
+                    ? "bg-orange-500 text-white"
+                    : "text-gray-300"
+                }`}
+              >
+                <ProfileImage user={contact} size="w-8 h-8" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="font-medium truncate">
+                    {getDisplayName(contact)}
+                  </span>
+                  {contact.lastMessage && (
+                    <span className="text-xs text-gray-400 truncate">
+                      {contact.lastMessage.content || "File"}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
+            </UnreadIndicator>
           ))}
         </div>
+
+        {/* Profile Section */}
+        <ProfileSection />
       </div>
 
       {/* Chat Window */}
       <div className="flex flex-col flex-1">
-        <ChatHeader activeChat={activeChat} updateGroupInfo={updateGroupInfo} />
+        {selectedChatData ? (
+          <>
+            <ChatHeader
+              activeChat={{
+                name:
+                  selectedChatType === "channel"
+                    ? selectedChatData.name
+                    : getDisplayName(selectedChatData),
+                type: selectedChatType,
+                ...selectedChatData,
+              }}
+              updateGroupInfo={() => {}}
+            />
 
-        {/* Messages */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50">
-          {messages.map((msg) => (
-            <div key={msg.id} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`px-4 py-2 rounded-xl max-w-xs break-words shadow-sm ${
-                  msg.sender === "me" ? "bg-orange-500 text-white" : "bg-white text-gray-900"
-                }`}
-              >
-                {msg.text}
-              </div>
+            {/* Messages */}
+            <div className="flex-1 p-4 overflow-y-auto space-y-1 bg-gray-50">
+              {selectedChatMessages.map((msg) => (
+                <MessageComponent
+                  key={msg._id}
+                  message={msg}
+                  isChannel={selectedChatType === "channel"}
+                />
+              ))}
+              <div ref={messagesEndRef} />
             </div>
-          ))}
-        </div>
 
-        {/* Input Box */}
-        <div className="p-4 bg-white flex items-center border-t gap-2 shadow-inner">
-          <button className="p-2 hover:bg-gray-100 rounded-full">📎</button>
-          <button className="p-2 hover:bg-gray-100 rounded-full">🖼️</button>
-          <button className="p-2 hover:bg-gray-100 rounded-full">🎤</button>
-          <button className="p-2 hover:bg-gray-100 rounded-full">😀</button>
-
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={`Message ${activeChat.name}`}
-            className="flex-1 p-2 mx-2 border rounded-xl outline-none focus:ring-2 focus:ring-orange-500 transition"
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          />
-
-          {input.trim() !== "" && (
-            <button
-              onClick={sendMessage}
-              className="ml-2 bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition"
-            >
-              ➤
-            </button>
-          )}
-        </div>
+            {/* Message Input */}
+            <MessageInput
+              selectedChatData={selectedChatData}
+              selectedChatType={selectedChatType}
+            />
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center bg-gray-50">
+            <div className="text-center">
+              <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-gray-400 text-3xl">💬</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                Welcome to TrendTalks
+              </h3>
+              <p className="text-gray-500">
+                Select a conversation to start chatting
+              </p>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Modals */}
+      <AddDMModal
+        isOpen={showAddDMModal}
+        onClose={() => setShowAddDMModal(false)}
+        onAddContact={handleAddDM}
+      />
+
+      <CreateChannelModal
+        isOpen={showCreateChannelModal}
+        onClose={() => setShowCreateChannelModal(false)}
+        onChannelCreated={handleChannelCreated}
+      />
     </div>
+  );
+};
+
+const Chat = () => {
+  return (
+    <ChatProvider>
+      <ChatContent />
+    </ChatProvider>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ProfileImage from "../components/ProfileImage.jsx";
 
 const ChatHeader = ({ activeChat }) => {
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
@@ -8,29 +9,48 @@ const ChatHeader = ({ activeChat }) => {
   const getRandomDate = () => {
     const start = new Date(2020, 0, 1);
     const end = new Date();
-    const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    const date = new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
     return date.toDateString();
   };
 
   // 20 Indian member names
   const indianNames = [
-    "Aarav", "Ananya", "Rohan", "Priya", "Vivaan", "Saanvi", "Arjun", "Isha",
-    "Aditya", "Diya", "Karan", "Anika", "Shaurya", "Meera", "Devansh", "Tanya",
-    "Vihaan", "Riya", "Kabir", "Aditi"
+    "Aarav",
+    "Ananya",
+    "Rohan",
+    "Priya",
+    "Vivaan",
+    "Saanvi",
+    "Arjun",
+    "Isha",
+    "Aditya",
+    "Diya",
+    "Karan",
+    "Anika",
+    "Shaurya",
+    "Meera",
+    "Devansh",
+    "Tanya",
+    "Vihaan",
+    "Riya",
+    "Kabir",
+    "Aditi",
   ];
 
   const members = indianNames.map((name, i) => ({
     id: i,
     name,
     avatar: `https://i.pravatar.cc/150?img=${i + 10}`,
-    email: `${name.toLowerCase()}@example.com`
+    email: `${name.toLowerCase()}@example.com`,
   }));
 
   // 30 media items (mix of images and audio)
   const mediaItems = Array.from({ length: 30 }, (_, i) => ({
     id: i,
     type: Math.random() < 0.4 ? "voice" : "image",
-    src: `https://picsum.photos/200/200?random=${i + 1}`
+    src: `https://picsum.photos/200/200?random=${i + 1}`,
   }));
 
   // 10 random links
@@ -44,7 +64,7 @@ const ChatHeader = ({ activeChat }) => {
     { id: 7, title: "LinkedIn", url: "https://www.linkedin.com" },
     { id: 8, title: "Twitter", url: "https://twitter.com" },
     { id: 9, title: "Instagram", url: "https://www.instagram.com" },
-    { id: 10, title: "Medium", url: "https://medium.com" }
+    { id: 10, title: "Medium", url: "https://medium.com" },
   ];
 
   const renderContent = () => {
@@ -52,15 +72,25 @@ const ChatHeader = ({ activeChat }) => {
       case "Overview":
         return (
           <div className="flex flex-col items-center gap-4 bg-gray-50 p-4 rounded shadow-inner">
-            <img src={activeChat.avatar} alt={activeChat.name} className="w-24 h-24 rounded-full shadow-lg" />
+            <ProfileImage
+              user={activeChat}
+              size="w-24 h-24"
+              showOnlineStatus={activeChat.type !== "channel"}
+              className="shadow-lg"
+            />
             <p className="font-bold text-2xl">{activeChat.name}</p>
             <p className="text-gray-600">Created on: {getRandomDate()}</p>
             <p className="text-gray-700 text-center px-4">
-              Welcome to a place where ideas flourish and creativity meets collaboration. Share, connect, and enjoy the journey together.
+              Welcome to a place where ideas flourish and creativity meets
+              collaboration. Share, connect, and enjoy the journey together.
             </p>
             <div className="flex gap-2 mt-2">
-              <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 shadow-md">Exit Group</button>
-              <button className="bg-blue-200 text-blue-800 px-4 py-2 rounded hover:bg-blue-300 shadow-md">Report Group</button>
+              <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 shadow-md">
+                Exit Group
+              </button>
+              <button className="bg-blue-200 text-blue-800 px-4 py-2 rounded hover:bg-blue-300 shadow-md">
+                Report Group
+              </button>
             </div>
           </div>
         );
@@ -75,7 +105,11 @@ const ChatHeader = ({ activeChat }) => {
                 } hover:shadow-xl`}
               >
                 <div className="flex items-center gap-3">
-                  <img src={member.avatar} alt={member.name} className="w-12 h-12 rounded-full shadow-sm" />
+                  <ProfileImage
+                    user={{ ...member, _id: member.id }}
+                    size="w-12 h-12"
+                    showOnlineStatus={true}
+                  />
                   <p className="text-gray-800 font-medium">{member.name}</p>
                 </div>
                 <p className="text-gray-500 text-sm">{member.email}</p>
@@ -91,10 +125,16 @@ const ChatHeader = ({ activeChat }) => {
                 <div
                   key={item.id}
                   className="w-36 h-36 flex items-center justify-center bg-gray-200 rounded-lg shadow-md hover:shadow-lg cursor-pointer"
-                  onClick={() => item.type === "image" && setModalImage(item.src)}
+                  onClick={() =>
+                    item.type === "image" && setModalImage(item.src)
+                  }
                 >
                   {item.type === "image" ? (
-                    <img src={item.src} alt="media" className="w-full h-full object-cover rounded-lg" />
+                    <img
+                      src={item.src}
+                      alt="media"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
                   ) : (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +143,12 @@ const ChatHeader = ({ activeChat }) => {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5v14l12-7-12-7z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5v14l12-7-12-7z"
+                      />
                     </svg>
                   )}
                 </div>
@@ -115,7 +160,11 @@ const ChatHeader = ({ activeChat }) => {
                 className="fixed inset-0 z-40 flex items-center justify-center bg-black/90"
                 onClick={() => setModalImage(null)}
               >
-                <img src={modalImage} alt="Full view" className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl object-contain" />
+                <img
+                  src={modalImage}
+                  alt="Full view"
+                  className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl object-contain"
+                />
               </div>
             )}
           </>
@@ -131,7 +180,8 @@ const ChatHeader = ({ activeChat }) => {
                 rel="noopener noreferrer"
                 className="p-3 bg-white rounded-lg shadow-md hover:bg-gray-100 break-words"
               >
-                {link.title} - <span className="text-blue-600 underline">{link.url}</span>
+                {link.title} -{" "}
+                <span className="text-blue-600 underline">{link.url}</span>
               </a>
             ))}
           </div>
@@ -143,18 +193,23 @@ const ChatHeader = ({ activeChat }) => {
 
   return (
     <div className="p-4 bg-white border-b flex items-center relative">
-      <img
-        src={activeChat.avatar}
-        alt={activeChat.name}
-        className="w-10 h-10 rounded-full mr-3 cursor-pointer"
+      <ProfileImage
+        user={activeChat}
+        size="w-10 h-10"
+        showOnlineStatus={activeChat.type !== "channel"}
         onClick={() => setShowHeaderMenu(true)}
+        className="mr-3 cursor-pointer"
       />
       <div onClick={() => setShowHeaderMenu(true)} className="cursor-pointer">
         <p className="font-medium">{activeChat.name}</p>
         {activeChat.type === "channel" && (
-          <p className="text-sm text-gray-500 truncate">{activeChat.description || "No description"}</p>
+          <p className="text-sm text-gray-500 truncate">
+            {activeChat.description || "No description"}
+          </p>
         )}
-        <p className="text-sm text-gray-500">{activeChat.type === "dm" ? "Direct Message" : "Group Chat"}</p>
+        <p className="text-sm text-gray-500">
+          {activeChat.type === "dm" ? "Direct Message" : "Group Chat"}
+        </p>
       </div>
 
       {showHeaderMenu && (
@@ -166,7 +221,9 @@ const ChatHeader = ({ activeChat }) => {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`text-left p-2 rounded hover:bg-gray-400 ${
-                    activeTab === tab ? "bg-gray-400 font-semibold text-white" : "text-gray-800"
+                    activeTab === tab
+                      ? "bg-gray-400 font-semibold text-white"
+                      : "text-gray-800"
                   }`}
                 >
                   {tab}
