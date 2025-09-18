@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../context/SocketContext";
-import { toast } from "react-toastify";
-import api from "../utils/api";
+import axios from "axios";
 
 const ChatPage = () => {
   const socket = useSocket();
   const navigate = useNavigate();
-  const [authChecked, setAuthChecked] = useState(false);
   const [users, setUsers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [conversations, setConversations] = useState([]);
@@ -17,113 +15,54 @@ const ChatPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Check authentication status
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const email = localStorage.getItem("email");
-    
-    if (!token || !email) {
-      setLoading(false);
-      navigate("/login");
-    } else {
-      setAuthChecked(true);
-    }
-  }, [navigate]);
-
-  const fetchUsers = async () => {
+  const initializeChat = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      const response = await axios.get("http://localhost:3000/api/chat/users", config);
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      if (error.response?.status === 401) {
-        navigate("/login");
-      }
-    }
-  };
-
-  const fetchConversations = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      const response = await axios.get("http://localhost:3000/api/chat/conversations", config);
-      setConversations(response.data);
-    } catch (error) {
-      console.error("Error fetching conversations:", error);
-      if (error.response?.status === 401) {
-        navigate("/login");
-      }
-    }
-  };
-
-  // Combined authentication and initialization
-  useEffect(() => {
-    const initializeChat = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const email = localStorage.getItem("email");
-        
-        if (!token || !email) {
-          setLoading(false);
-          navigate("/login");
-          return;
-        }
-
-        // Verify token validity with backend
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`
+      setLoading(true);
+      if (!localStorage.getItem("userEmail")) {
+        const email = prompt("Please enter your email to start chatting:");
+        if (email) {
+          try {
+            const response = await axios.get(`/api/chat/users/search?email=${email}`);
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("userId", response.data._id);
+            localStorage.setItem("userName", response.data.name);
+          } catch (error) {
+            const name = prompt("Email not found. Please enter your name to continue:");
+            if (name) {
+              try {
+                const registerResponse = await axios.post("/api/users/register", {
+                  name,
+                  email
+                });
+                localStorage.setItem("userEmail", email);
+                localStorage.setItem("userId", registerResponse.data._id);
+                localStorage.setItem("userName", name);
+              } catch (err) {
+                setError("Error registering user");
+                setLoading(false);
+                return;
+              }
+            }
           }
-        };
-        
-        try {
-          await axios.get("http://localhost:3000/api/user/verify", config);
-        } catch (error) {
-          console.error("Token verification failed:", error);
-          localStorage.clear(); // Clear invalid token
-          setLoading(false);
-          navigate("/login");
-          return;
         }
-
-        // Get or create user chat profile
-        try {
-          const userResponse = await axios.get(`/api/chat/users/search?email=${email}`);
-          localStorage.setItem("userId", userResponse.data._id);
-        } catch (error) {
-          // If user doesn't exist in chat system, create them
-          const name = localStorage.getItem("name"); // Get name from signup
-          const createResponse = await axios.post("/api/users/register", {
-            name: name || "User",  // Fallback if name not found
-            email
-          });
-          localStorage.setItem("userId", createResponse.data._id);
-        }
-
-        // Fetch chat data
-        await Promise.all([fetchUsers(), fetchConversations()]);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error initializing chat:", error);
-        setError("Failed to load chat data");
-        setLoading(false);
       }
-    };
 
+      await Promise.all([
+        fetchUsers(),
+        fetchConversations()
+      ]);
+
+      setLoading(false);
+    } catch (err) {
+      setError("Error initializing chat");
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     initializeChat();
-  }, [navigate]);
+  }, []);
 
-  // Socket connection and events
   useEffect(() => {
     if (!socket || !localStorage.getItem("userId")) return;
 
@@ -143,7 +82,7 @@ const ChatPage = () => {
     });
 
     socket.on("receive_message", (message) => {
-      if (activeConversation?._id === message.conversationId) {
+      if (activeConversation && message.conversationId === activeConversation._id) {
         setMessages(prev => [...prev, message]);
       }
     });
@@ -160,12 +99,21 @@ const ChatPage = () => {
     };
   }, [socket, activeConversation]);
 
-  const fetchMessages = async (conversationId) => {
+  const fetchUsers = async () => {
     try {
-      const response = await axios.get(`/api/chat/messages/${conversationId}`);
-      setMessages(response.data);
+      const response = await axios.get("/api/chat/users");
+      setUsers(response.data);
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  const fetchConversations = async () => {
+    try {
+      const response = await axios.get("/api/chat/conversations");
+      setConversations(response.data);
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
     }
   };
 
@@ -175,18 +123,32 @@ const ChatPage = () => {
       const response = await axios.post("/api/chat/conversation", {
         participantId: userId
       });
-      
-      if (!conversations.find(c => c._id === response.data._id)) {
-        setConversations(prev => [...prev, response.data]);
-      }
-      setActiveConversation(response.data);
-      
-      // Fetch messages for this conversation
-      await fetchMessages(response.data._id);
+      const newConversation = response.data;
+      setConversations(prev => [...prev, newConversation]);
+      setActiveConversation(newConversation);
+      setLoading(false);
     } catch (error) {
       console.error("Error starting chat:", error);
-    } finally {
       setLoading(false);
+    }
+  };
+
+  const createGroup = async () => {
+    const name = prompt("Enter new group name:");
+    if (name) {
+      try {
+        setLoading(true);
+        const response = await axios.post("/api/chat/conversation", {
+          isGroup: true,
+          groupName: name,
+          participants: []
+        });
+        setConversations(prev => [...prev, response.data]);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error creating group:", error);
+        setLoading(false);
+      }
     }
   };
 
@@ -195,28 +157,18 @@ const ChatPage = () => {
 
     const messageData = {
       sender: localStorage.getItem("userId"),
-      content: input.trim(),
+      content: input,
       conversationId: activeConversation._id
     };
 
     socket.emit("send_message", messageData);
-    
-    // Optimistically add message to UI
-    setMessages(prev => [...prev, {
-      ...messageData,
-      _id: Date.now(),
-      createdAt: new Date().toISOString()
-    }]);
-    
     setInput("");
   };
 
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-100">
-        <div className="text-xl text-gray-600">
-          <div className="animate-pulse">Loading chat...</div>
-        </div>
+        <div className="text-xl text-gray-600">Loading chat...</div>
       </div>
     );
   }
@@ -229,31 +181,8 @@ const ChatPage = () => {
     );
   }
 
-  // Create group function
-  const createGroup = async () => {
-    const name = prompt("Enter new group name:");
-    if (name) {
-      try {
-        setLoading(true);
-        const response = await axios.post("/api/chat/conversation", {
-          isGroup: true,
-          groupName: name,
-          participants: []
-        });
-        setConversations(prev => [...prev, response.data]);
-        setActiveConversation(response.data);
-        toast.success("Group created successfully!");
-      } catch (error) {
-        console.error("Error creating group:", error);
-        toast.error("Failed to create group");
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 font-sans">
       {/* Sidebar */}
       <div className="w-64 bg-gradient-to-b from-slate-900 via-zinc-800 to-gray-800 text-white flex flex-col">
         <div className="p-4 border-b border-gray-700 flex items-center justify-between">
@@ -266,57 +195,19 @@ const ChatPage = () => {
           </button>
         </div>
 
-        {/* Create Group / Add DM Buttons */}
-        <div className="flex flex-col p-2 gap-2 border-b border-gray-700">
+        {/* Create Group Button */}
+        <div className="p-2 border-b border-gray-700">
           <button
             onClick={createGroup}
             className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg transition flex items-center justify-center gap-2"
           >
             <span>➕</span> Create Group
           </button>
-          <button
-            onClick={() => {
-              const email = prompt("Enter user email to start chat:");
-              if (email) {
-                axios.get(`/api/chat/users/search?email=${email}`)
-                  .then(response => {
-                    startChat(response.data._id);
-                  })
-                  .catch(() => {
-                    toast.error("User not found");
-                  });
-              }
-            }}
-            className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition flex items-center justify-center gap-2"
-          >
-            <span>➕</span> Add DM
-          </button>
         </div>
 
-        {/* Groups and Users Lists */}
+        {/* Users List */}
         <div className="flex-1 overflow-y-auto">
-          {/* Groups Section */}
-          <div className="p-3 text-gray-400 uppercase text-xs">Groups</div>
-          {conversations.filter(conv => conv.isGroup).map((conv) => (
-            <div
-              key={conv._id}
-              onClick={() => {
-                setActiveConversation(conv);
-                fetchMessages(conv._id);
-              }}
-              className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-700 rounded-lg mx-2 mb-1 ${
-                activeConversation?._id === conv._id ? "bg-orange-500" : ""
-              }`}
-            >
-              <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
-                {conv.groupName?.[0]?.toUpperCase() || 'G'}
-              </div>
-              <span className="truncate">{conv.groupName || 'Group'}</span>
-            </div>
-          ))}
-
-          {/* Direct Messages Section */}
-          <div className="p-3 text-gray-400 uppercase text-xs mt-4">Direct Messages</div>
+          <div className="p-3 text-gray-400 uppercase text-xs">Online Users</div>
           {users.map((user) => (
             <div
               key={user._id}
@@ -356,21 +247,19 @@ const ChatPage = () => {
                     )?.name || "Chat"
                 }
               </div>
-              {activeConversation.isGroup && (
-                <div className="text-sm text-gray-500 mt-1">
-                  {activeConversation.participants?.length || 0} members
-                </div>
-              )}
             </div>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-              {messages.map((msg) => (
+              {messages.map((msg, idx) => (
                 <div 
-                  key={msg._id} 
+                  key={msg._id || idx} 
                   className={`flex ${msg.sender === localStorage.getItem('userId') ? "justify-end" : "justify-start"}`}
                 >
                   <div className="max-w-[70%]">
+                    {msg.sender !== localStorage.getItem('userId') && (
+                      <div className="text-xs text-gray-500 ml-2 mb-1">{msg.sender.name}</div>
+                    )}
                     <div className={`px-4 py-2 rounded-xl break-words ${
                       msg.sender === localStorage.getItem('userId')
                         ? "bg-orange-500 text-white"
