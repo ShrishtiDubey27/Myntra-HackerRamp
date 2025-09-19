@@ -26,7 +26,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
     ) {
       return filePath;
     }
-    return ${backendUrl}/${filePath};
+    return `${backendUrl}/${filePath}`;
   };
 
   const handleAudioPlay = () => {
@@ -91,7 +91,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
                 </div>
                 <div className="text-xs text-gray-500">
                   {message.fileSize
-                    ? ${(message.fileSize / 1024).toFixed(1)} KB
+                    ? `${(message.fileSize / 1024).toFixed(1)} KB`
                     : "File"}
                 </div>
               </div>
@@ -125,7 +125,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
 
   return (
     <div
-      className={flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4}
+      className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4`}
     >
       {/* Special handling for voice messages */}
       {message.messageType === "audio" ? (

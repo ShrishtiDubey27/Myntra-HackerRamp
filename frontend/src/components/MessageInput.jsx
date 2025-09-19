@@ -54,12 +54,12 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
       formData.append("file", file);
 
       const response = await axios.post(
-        ${backendUrl}/api/chat/messages/upload-file,
+        `${backendUrl}/api/chat/messages/upload-file`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: Bearer ${chatToken},
+            Authorization: `Bearer ${chatToken}`,
           },
         }
       );
@@ -113,12 +113,12 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
       formData.append("file", audioFile);
 
       const response = await axios.post(
-        ${backendUrl}/api/chat/messages/upload-file,
+        `${backendUrl}/api/chat/messages/upload-file`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: Bearer ${chatToken},
+            Authorization: `Bearer ${chatToken}`,
           },
         }
       );

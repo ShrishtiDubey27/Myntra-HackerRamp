@@ -9,7 +9,7 @@ const ProfileSection = () => {
 
   const getDisplayName = () => {
     if (chatUser.firstName && chatUser.lastName) {
-      return ${chatUser.firstName} ${chatUser.lastName};
+      return `${chatUser.firstName} ${chatUser.lastName}`;
     }
     if (chatUser.name) {
       return chatUser.name;

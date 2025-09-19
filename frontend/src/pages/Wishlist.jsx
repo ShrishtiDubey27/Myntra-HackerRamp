@@ -143,7 +143,7 @@ const Wishlist = () => {
           productId: productId,
         });
         setShareMessage(
-          🎭 Check out how ${productName} looks on me with virtual try-on!
+          `🎭 Check out how ${productName} looks on me with virtual try-on!`
         );
         setShowShareModal(true);
         setSearchQuery("");
@@ -158,7 +158,7 @@ const Wishlist = () => {
     setSelectedContact({ ...contact, isChannel });
     setSearchQuery(
       contact.firstName
-        ? ${contact.firstName} ${contact.lastName}
+        ? `${contact.firstName} ${contact.lastName}`
         : contact.name
     );
     setShowDropdown(false);
@@ -228,10 +228,10 @@ const Wishlist = () => {
         sender: chatUser.id,
         content:
           shareMessage ||
-          🎭 Virtual Try-On Result: ${shareImageData.productName}\n\nThis is a virtual try-on picture showing how this product might look!,
+          `🎭 Virtual Try-On Result: ${shareImageData.productName}\n\nThis is a virtual try-on picture showing how this product might look!`,
         messageType: "image",
         fileUrl: shareImageData.imageUrl,
-        fileName: virtual-tryon-${shareImageData.productName}.jpg,
+        fileName: `virtual-tryon-${shareImageData.productName}.jpg`,
         fileSize: 0,
       };
 
@@ -561,7 +561,7 @@ const Wishlist = () => {
                           </div>
                           {existingFilteredResults.map((item) => (
                             <button
-                              key={existing-${item._id}}
+                              key={`existing-${item._id}`}
                               onClick={() =>
                                 handleContactSelect(item, item.isChannel)
                               }
@@ -592,11 +592,11 @@ const Wishlist = () => {
                                 <p className="text-sm font-medium">
                                   {item.isChannel
                                     ? item.name
-                                    : ${item.firstName} ${item.lastName}}
+                                    : `${item.firstName} ${item.lastName}`}
                                 </p>
                                 <p className="text-xs text-gray-500">
                                   {item.isChannel
-                                    ? ${item.members?.length || 0} members
+                                    ? `${item.members?.length || 0} members`
                                     : item.email}
                                 </p>
                               </div>
@@ -613,7 +613,7 @@ const Wishlist = () => {
                           </div>
                           {newUsersResults.map((user) => (
                             <button
-                              key={new-${user._id}}
+                              key={`new-${user._id}`}
                               onClick={() => handleContactSelect(user, false)}
                               className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors duration-200 text-left border-b border-gray-50 last:border-b-0"
                             >
@@ -633,7 +633,7 @@ const Wishlist = () => {
                               <div className="flex-1">
                                 <p className="text-sm font-medium">
                                   {user.firstName && user.lastName
-                                    ? ${user.firstName} ${user.lastName}
+                                    ? `${user.firstName} ${user.lastName}`
                                     : user.name || user.email}
                                 </p>
                                 <p className="text-xs text-gray-500">
@@ -656,7 +656,7 @@ const Wishlist = () => {
                           </div>
                           {allChannelsResults.map((channel) => (
                             <button
-                              key={channel-${channel._id}}
+                              key={`channel-${channel._id}`}
                               onClick={() => handleContactSelect(channel, true)}
                               className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors duration-200 text-left border-b border-gray-50 last:border-b-0"
                             >
@@ -722,7 +722,7 @@ const Wishlist = () => {
                   <span className="text-sm font-medium text-blue-900">
                     {selectedContact.isChannel
                       ? selectedContact.name
-                      : ${selectedContact.firstName} ${selectedContact.lastName}}
+                      : `${selectedContact.firstName} ${selectedContact.lastName}`}
                   </span>
                 </div>
               </div>

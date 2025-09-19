@@ -247,7 +247,7 @@ const ChatHeader = ({ activeChat }) => {
                     <div>
                       <p className="text-gray-800 font-medium">
                         {member.firstName && member.lastName
-                          ? ${member.firstName} ${member.lastName}
+                          ? `${member.firstName} ${member.lastName}`
                           : member.name || "Unknown"}
                         {member._id ===
                           (channelData?.channel?.admin?._id ||
@@ -390,7 +390,7 @@ const ChatHeader = ({ activeChat }) => {
           const links = extractLinksFromText(message.content);
           links.forEach((link) => {
             allLinks.push({
-              id: ${message._id}-${link},
+              id: `${message._id}-${link}`,
               url: link,
               sender: message.sender,
               timestamp: message.timestamp,

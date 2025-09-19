@@ -74,10 +74,10 @@ app.post("/api/chatAI", async (req, res) => {
     }
 
     const contextString = context
-      .map((msg) => ${msg.sender === "user" ? "User" : "Bot"}: ${msg.text})
+      .map((msg) => `${msg.sender === "user" ? "User" : "Bot"}: ${msg.text}`)
       .join("\n");
 
-    const fullPrompt = ${contextString}\nUser: ${prompt};
+    const fullPrompt = `${contextString}\nUser: ${prompt}`;
 
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash-latest",
