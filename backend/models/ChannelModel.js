@@ -5,6 +5,10 @@ const channelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    default: "",
+  },
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,

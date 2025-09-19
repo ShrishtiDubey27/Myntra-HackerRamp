@@ -4,7 +4,7 @@ const API_BASE_URL =
   import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 const chatAPI = axios.create({
-  baseURL: `${API_BASE_URL}/api/chat`,
+  baseURL: ${API_BASE_URL}/api/chat,
   withCredentials: true,
 });
 
@@ -57,10 +57,41 @@ export const getUserChannels = async () => {
   return response.data;
 };
 
+// Get all channels
+export const getAllChannels = async () => {
+  const response = await chatAPI.get("/channel/get-all-channels");
+  return response.data;
+};
+
 // Get channel messages
 export const getChannelMessages = async (channelId) => {
   const response = await chatAPI.get(
-    `/channel/get-channel-messages/${channelId}`
+    /channel/get-channel-messages/${channelId}
+  );
+  return response.data;
+};
+
+// Get channel details (members, media, links)
+export const getChannelDetails = async (channelId) => {
+  const response = await chatAPI.get(
+    /channel/get-channel-details/${channelId}
+  );
+  return response.data;
+};
+
+// Leave channel
+export const leaveChannel = async (channelId) => {
+  const response = await chatAPI.post(/channel/leave-channel/${channelId});
+  return response.data;
+};
+
+// Update channel description
+export const updateChannelDescription = async (channelId, description) => {
+  const response = await chatAPI.put(
+    /channel/update-description/${channelId},
+    {
+      description,
+    }
   );
   return response.data;
 };

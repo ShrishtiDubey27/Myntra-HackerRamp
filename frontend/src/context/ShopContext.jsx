@@ -152,6 +152,13 @@ const ShopContextProvider = (props) => {
     }
   }, []);
 
+  // Fetch cart whenever token changes (after login)
+  useEffect(() => {
+    if (token) {
+      getUserCart(token);
+    }
+  }, [token]);
+
   const value = {
     products,
     currency,

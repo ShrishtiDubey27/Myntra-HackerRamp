@@ -3,10 +3,7 @@ import mongoose from "mongoose";
 const CHAT_DB_URI = process.env.CHAT_DB_URI;
 
 // Create a new, separate connection instance for the chat database
-const chatDb = mongoose.createConnection(CHAT_DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const chatDb = mongoose.createConnection(CHAT_DB_URI);
 
 chatDb.on("connected", () => {
   console.log("✅ Chat DB connection successful");

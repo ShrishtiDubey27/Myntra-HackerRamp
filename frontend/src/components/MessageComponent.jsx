@@ -18,7 +18,15 @@ const MessageComponent = ({ message, isChannel = false }) => {
   };
 
   const getFileUrl = (filePath) => {
-    return `${backendUrl}/${filePath}`;
+    // Check if it's already a full URL (external or blob URL)
+    if (
+      filePath?.startsWith("http") ||
+      filePath?.startsWith("blob:") ||
+      filePath?.startsWith("data:")
+    ) {
+      return filePath;
+    }
+    return ${backendUrl}/${filePath};
   };
 
   const handleAudioPlay = () => {
@@ -83,7 +91,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
                 </div>
                 <div className="text-xs text-gray-500">
                   {message.fileSize
-                    ? `${(message.fileSize / 1024).toFixed(1)} KB`
+                    ? ${(message.fileSize / 1024).toFixed(1)} KB
                     : "File"}
                 </div>
               </div>
@@ -91,7 +99,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
                 onClick={downloadFile}
                 className="flex-shrink-0 text-blue-500 hover:text-blue-700"
               >
-                ⬇️
+                ⬇
               </button>
             </div>
           </div>
@@ -117,7 +125,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
 
   return (
     <div
-      className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4`}
+      className={flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4}
     >
       {/* Special handling for voice messages */}
       {message.messageType === "audio" ? (

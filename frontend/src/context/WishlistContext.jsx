@@ -5,24 +5,29 @@ export const WishlistContext = createContext();
 
 const WishlistContextProvider = (props) => {
   const [wishlistItems, setWishlistItems] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load wishlist from localStorage on component mount
   useEffect(() => {
     const savedWishlist = localStorage.getItem("wishlist");
     if (savedWishlist) {
       try {
-        setWishlistItems(JSON.parse(savedWishlist));
+        const parsedWishlist = JSON.parse(savedWishlist);
+        setWishlistItems(parsedWishlist);
       } catch (error) {
         console.error("Error loading wishlist from localStorage:", error);
         setWishlistItems([]);
       }
     }
+    setIsLoaded(true);
   }, []);
 
-  // Save wishlist to localStorage whenever it changes
+  // Save wishlist to localStorage whenever it changes (but only after initial load)
   useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlistItems));
-  }, [wishlistItems]);
+    if (isLoaded) {
+      localStorage.setItem("wishlist", JSON.stringify(wishlistItems));
+    }
+  }, [wishlistItems, isLoaded]);
 
   // Add item to wishlist
   const addToWishlist = (product) => {

@@ -74,10 +74,10 @@ app.post("/api/chatAI", async (req, res) => {
     }
 
     const contextString = context
-      .map((msg) => `${msg.sender === "user" ? "User" : "Bot"}: ${msg.text}`)
+      .map((msg) => ${msg.sender === "user" ? "User" : "Bot"}: ${msg.text})
       .join("\n");
 
-    const fullPrompt = `${contextString}\nUser: ${prompt}`;
+    const fullPrompt = ${contextString}\nUser: ${prompt};
 
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash-latest",
@@ -86,7 +86,7 @@ app.post("/api/chatAI", async (req, res) => {
     const response = await result.response;
     let text = response.text();
 
-    const botPrefix = /^bot[:\s-]*\s*/i;
+    const botPrefix = /^bot[:\s-]\s/i;
     if (botPrefix.test(text)) {
       text = text.replace(botPrefix, "").trim();
     }
@@ -106,13 +106,3 @@ const server = app.listen(port, () => {
 
 // Setup Socket.io for real-time chat
 setupSocket(server);
-
-// Connect to MongoDB using the URI from .env
-mongoose
-  .connect(databaseURL)
-  .then(() => {
-    console.log("DB Connection Successfull");
-  })
-  .catch((err) => {
-    console.log("DB Connection Error:", err.message);
-  });

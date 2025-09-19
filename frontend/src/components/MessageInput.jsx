@@ -54,12 +54,12 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
       formData.append("file", file);
 
       const response = await axios.post(
-        `${backendUrl}/api/chat/messages/upload-file`,
+        ${backendUrl}/api/chat/messages/upload-file,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${chatToken}`,
+            Authorization: Bearer ${chatToken},
           },
         }
       );
@@ -113,12 +113,12 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
       formData.append("file", audioFile);
 
       const response = await axios.post(
-        `${backendUrl}/api/chat/messages/upload-file`,
+        ${backendUrl}/api/chat/messages/upload-file,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${chatToken}`,
+            Authorization: Bearer ${chatToken},
           },
         }
       );
@@ -238,14 +238,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
             onClick={handleSendMessage}
             disabled={isUploading}
           >
-            <svg
-              className="w-5 h-5 text-white"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-            </svg>
+            <span className="text-white font-medium">Send</span>
           </button>
         </div>
       </div>
@@ -256,7 +249,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
         ref={fileInputRef}
         onChange={handleFileUpload}
         className="hidden"
-        accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.txt"
+        accept="image/,audio/,video/*,.pdf,.doc,.docx,.txt"
       />
 
       {/* Upload Progress Indicator */}
