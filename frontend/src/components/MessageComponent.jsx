@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { ChatContext } from "../context/ChatContext.jsx";
 import { ShopContext } from "../context/ShopContext.jsx";
 import VoiceMessage from "./VoiceMessage.jsx";
+import PollComponent from "./PollComponent.jsx";
 
 const MessageComponent = ({ message, isChannel = false }) => {
   const { chatUser } = useContext(ChatContext);
@@ -116,6 +117,26 @@ const MessageComponent = ({ message, isChannel = false }) => {
           />
         );
 
+      case "poll":
+        // Render poll component
+        const pollDataWithId = {
+          ...message.pollData,
+          _id: message.pollId || message.pollData?._id
+        };
+        
+        return (
+          <PollComponent
+            poll={pollDataWithId}
+            onVote={(updatedPoll) => {
+              // Handle poll vote updates
+              console.log('Poll updated:', updatedPoll);
+            }}
+            backendUrl={backendUrl}
+            userToken={localStorage.getItem('chatToken') || localStorage.getItem('token')}
+            currentUserId={chatUser?.id}
+          />
+        );
+
       default:
         return (
           <div className="text-gray-500 italic">Unsupported message type</div>
@@ -127,10 +148,10 @@ const MessageComponent = ({ message, isChannel = false }) => {
     <div
       className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4`}
     >
-      {/* Special handling for voice messages */}
-      {message.messageType === "audio" ? (
-        <div className="relative">
-          {/* Channel message sender name for voice messages */}
+      {/* Special handling for voice messages and polls */}
+      {message.messageType === "audio" || message.messageType === "poll" ? (
+        <div className="relative w-full max-w-md">
+          {/* Channel message sender name for voice messages and polls */}
           {isChannel && !isOwnMessage && (
             <div className="text-xs font-semibold mb-1 text-gray-600 ml-2">
               {message.sender.firstName ||

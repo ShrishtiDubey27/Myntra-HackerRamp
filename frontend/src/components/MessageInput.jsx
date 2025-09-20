@@ -3,6 +3,7 @@ import EmojiPicker from "emoji-picker-react";
 import { ChatContext } from "../context/ChatContext.jsx";
 import { ShopContext } from "../context/ShopContext.jsx";
 import VoiceRecorder from "./VoiceRecorder.jsx";
+import CreatePollModal from "./CreatePollModal.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -10,6 +11,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
+  const [showCreatePoll, setShowCreatePoll] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -167,6 +169,41 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
     }
   };
 
+  const handlePollCreated = (pollResponse) => {
+    if (!socket.current || !chatUser) return;
+
+    // Send poll as a message through socket
+    const pollMessage = {
+      sender: chatUser.id,
+      messageType: "poll",
+      pollId: pollResponse.poll._id,
+      pollData: pollResponse.poll,
+      timestamp: new Date(),
+    };
+
+    if (selectedChatType === "contact") {
+      socket.current.emit("sendMessage", {
+        ...pollMessage,
+        recipient: selectedChatData._id,
+      });
+    } else if (selectedChatType === "channel") {
+      socket.current.emit("send-channel-message", {
+        ...pollMessage,
+        channelId: selectedChatData._id,
+      });
+    }
+
+    toast.success("Poll created successfully!");
+  };
+
+  const getChatData = () => {
+    return {
+      chatType: selectedChatType === "contact" ? "direct" : "channel",
+      chatId: selectedChatData?._id,
+      recipient: selectedChatType === "contact" ? selectedChatData?._id : null,
+    };
+  };
+
   return (
     <div className="relative">
       {/* Voice Recorder Modal */}
@@ -232,6 +269,16 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
             🎤
           </button>
 
+          {/* Create Poll Button */}
+          <button
+            onClick={() => setShowCreatePoll(true)}
+            className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all p-2 hover:text-purple-500"
+            disabled={isUploading}
+            title="Create Fashion Poll"
+          >
+            📊
+          </button>
+
           {/* Send Button */}
           <button
             className="bg-blue-500 rounded-md flex items-center justify-center p-3 hover:bg-blue-600 focus:bg-blue-700 focus:border-none focus:outline-none focus:text-white duration-300 transition-all"
@@ -258,6 +305,16 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
           <div className="h-full bg-blue-700 animate-pulse"></div>
         </div>
       )}
+
+      {/* Create Poll Modal */}
+      <CreatePollModal
+        isOpen={showCreatePoll}
+        onClose={() => setShowCreatePoll(false)}
+        onPollCreated={handlePollCreated}
+        backendUrl={backendUrl}
+        userToken={chatToken}
+        chatData={getChatData()}
+      />
     </div>
   );
 };

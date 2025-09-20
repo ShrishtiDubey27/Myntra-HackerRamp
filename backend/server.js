@@ -18,6 +18,7 @@ import authRoutes from "./routes/AuthRoutes.js";
 import contactsRoutes from "./routes/ContactRoutes.js";
 import messagesRoutes from "./routes/MessagesRoutes.js";
 import channelRoutes from "./routes/ChannelRoutes.js";
+import pollRoutes from "./routes/pollRoutes.js";
 import setupSocket from "./socket.js";
 import { syncUserToChatDB } from "./controllers/SyncController.js";
 // ------------------------------------------
@@ -62,6 +63,7 @@ app.use("/api/chat/auth", authRoutes);
 app.use("/api/chat/contacts", contactsRoutes);
 app.use("/api/chat/messages", messagesRoutes);
 app.use("/api/chat/channel", channelRoutes);
+app.use("/api/chat/polls", pollRoutes);
 app.post("/api/chat/sync-user", syncUserToChatDB);
 // --------------------------------------------------
 

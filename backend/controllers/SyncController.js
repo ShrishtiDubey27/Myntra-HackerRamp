@@ -14,7 +14,7 @@ export const syncUserToChatDB = async (req, res) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await UserModel.findById(decoded.id);
+    const user = await UserModel.findById(decoded.id || decoded.userId);
 
     if (!user) {
       return res
@@ -53,8 +53,8 @@ export const syncUserToChatDB = async (req, res) => {
 
     // Create JWT token for chat
     const chatToken = jwt.sign(
-      { email: chatUser.email, userId: chatUser._id },
-      process.env.JWT_KEY,
+      { email: chatUser.email, userId: chatUser._id, id: chatUser._id },
+      process.env.JWT_SECRET,
       { expiresIn: "3d" }
     );
 

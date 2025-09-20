@@ -14,7 +14,7 @@ const messageSchema = new mongoose.Schema({
   },
   messageType: {
     type: String,
-    enum: ["text", "emoji", "audio", "file", "image"],
+    enum: ["text", "emoji", "audio", "file", "image", "poll"],
     required: true,
   },
   content: {
@@ -46,6 +46,22 @@ const messageSchema = new mongoose.Schema({
     required: function () {
       return this.messageType === "file" || this.messageType === "image";
     },
+  },
+  // Poll-specific fields
+  pollId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Poll",
+    required: function () {
+      return this.messageType === "poll";
+    },
+    default: null,
+  },
+  pollData: {
+    type: mongoose.Schema.Types.Mixed,
+    required: function () {
+      return this.messageType === "poll";
+    },
+    default: null,
   },
   isRead: {
     type: Boolean,

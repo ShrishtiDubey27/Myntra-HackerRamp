@@ -14,9 +14,14 @@ export const verifyToken = (req, res, next) => {
 
   if (!token) return res.status(401).send("You are not authenticated!");
 
-  jwt.verify(token, process.env.JWT_KEY, async (err, payload) => {
-    if (err) return res.status(403).send("Token is not valid!");
-    req.userId = payload?.userId;
+  jwt.verify(token, process.env.JWT_SECRET, async (err, payload) => {
+    if (err) {
+      console.log("Token verification error:", err.message);
+      return res.status(403).send("Token is not valid!");
+    }
+    console.log("Token payload:", payload);
+    req.userId = payload?.id; // Use 'id' instead of 'userId' from token payload
+    console.log("Set req.userId to:", req.userId);
     next();
   });
 };
