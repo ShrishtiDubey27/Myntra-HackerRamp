@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  import.meta.env.VITE_BACKEND_URL || `http://localhost:${process.env.VITE_BACKEND_PORT}`;
 
 // Generate outfit suggestion for a product
 export const generateOutfitSuggestion = async (productData) => {
