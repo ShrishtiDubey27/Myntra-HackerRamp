@@ -3,6 +3,7 @@ import { assets } from "../assets/frontend_assets/assets";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { WishlistContext } from "../context/WishlistContext";
+import NotificationDropdown from "./NotificationDropdown";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -86,6 +87,9 @@ const Navbar = () => {
             alt=""
           />
         )}
+
+        {/* Notification Dropdown */}
+        <NotificationDropdown />
 
         <Link to="/wishlist" className="relative">
           <svg

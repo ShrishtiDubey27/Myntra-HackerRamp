@@ -17,6 +17,8 @@ import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
 import { ToastContainer } from "react-toastify";
 import ChatAI from "./pages/ChatAI";
+import { NotificationProvider } from "./context/NotificationContext";
+import { useGlobalNotification } from "./hooks/useGlobalNotification";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -36,30 +38,39 @@ const ScrollToTop = () => {
   return null;
 };
 
+// Component to initialize global notification hook
+const NotificationInitializer = () => {
+  useGlobalNotification();
+  return null;
+};
+
 const App = () => {
   return (
-    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-      <ToastContainer />
-      <Navbar />
-      <SearchBar />
-      <ScrollToTop /> {/* ensures scroll top on route change */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/collection" element={<Collection />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/product/:productId" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/verify" element={<Verify />} />
-        <Route path="/chat" element={<ChatRoom />} />
-        <Route path="/chatAI" element={<ChatAI />} />
-      </Routes>
-      <Footer />
-    </div>
+    <NotificationProvider>
+      <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+        <ToastContainer />
+        <NotificationInitializer />
+        <Navbar />
+        <SearchBar />
+        <ScrollToTop /> {/* ensures scroll top on route change */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/product/:productId" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/chat" element={<ChatRoom />} />
+          <Route path="/chatAI" element={<ChatAI />} />
+        </Routes>
+        <Footer />
+      </div>
+    </NotificationProvider>
   );
 };
 
