@@ -133,11 +133,37 @@ export const ChatProvider = ({ children }) => {
       };
 
       const handleReceiveChannelMessage = (message) => {
+        console.log("Received channel message:", message);
+
+        // Add message to the conversation if it's the currently selected channel
         if (
-          selectedChatType !== undefined &&
+          selectedChatType === "channel" &&
+          selectedChatData &&
           selectedChatData._id === message.channelId
         ) {
           setSelectedChatMessages((prev) => [...prev, message]);
+
+          // Only mark as read if this is the actively viewed channel AND it's not our own message
+          if (message.sender._id !== chatUser?.id && socket.current) {
+            // For channels, we don't emit markAsRead since channels don't have traditional read receipts
+            // But we clear the unread count locally since user is viewing it
+            setUnreadCounts((prev) => ({
+              ...prev,
+              [message.channelId]: 0,
+            }));
+          }
+        } else {
+          // Message is NOT for currently selected channel, so increment unread count
+          if (message.sender._id !== chatUser?.id) {
+            setUnreadCounts((prev) => ({
+              ...prev,
+              [message.channelId]: (prev[message.channelId] || 0) + 1,
+            }));
+            console.log(
+              "Incremented unread count for channel:",
+              message.channelId
+            );
+          }
         }
       };
 
@@ -231,38 +257,47 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
-  const markChatAsRead = async (senderId) => {
+  const markChatAsRead = async (chatId, chatType = null) => {
     if (!chatToken || !chatUser) return;
 
     try {
-      // Mark messages as read via API
-      await axios.post(
-        `${backendUrl}/api/chat/messages/mark-as-read`,
-        { senderId },
-        {
-          headers: {
-            Authorization: `Bearer ${chatToken}`,
-          },
+      // Determine chat type if not provided
+      const typeToUse = chatType || selectedChatType;
+
+      // For direct messages, mark messages as read via API
+      if (typeToUse === "contact") {
+        await axios.post(
+          `${backendUrl}/api/chat/messages/mark-as-read`,
+          { senderId: chatId },
+          {
+            headers: {
+              Authorization: `Bearer ${chatToken}`,
+            },
+          }
+        );
+
+        // Also emit socket event for real-time update
+        if (socket.current) {
+          socket.current.emit("markAsRead", {
+            senderId: chatId,
+            recipientId: chatUser.id,
+          });
         }
-      );
-
-      // Also emit socket event for real-time update
-      if (socket.current) {
-        socket.current.emit("markAsRead", {
-          senderId: senderId,
-          recipientId: chatUser.id,
-        });
       }
+      // For channels, we just clear the local unread count
+      // (channels don't have traditional read receipts)
 
-      // Clear unread count for this chat
+      // Clear unread count for this chat/channel
       setUnreadCounts((prev) => ({
         ...prev,
-        [senderId]: 0,
+        [chatId]: 0,
       }));
 
       console.log(
         "Marked chat as read and cleared unread count for:",
-        senderId
+        chatId,
+        "Type:",
+        typeToUse
       );
     } catch (error) {
       console.error("Error marking messages as read:", error);

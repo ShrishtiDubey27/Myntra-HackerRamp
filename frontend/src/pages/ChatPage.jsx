@@ -37,6 +37,8 @@ const ChatContent = () => {
   const [showAddDMModal, setShowAddDMModal] = useState(false);
   const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [channelsCollapsed, setChannelsCollapsed] = useState(false);
+  const [directMessagesCollapsed, setDirectMessagesCollapsed] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Fetch initial data
@@ -213,7 +215,7 @@ const ChatContent = () => {
 
   if (!chatUser) {
     return (
-      <div className="flex h-screen bg-gray-100 items-center justify-center">
+      <div className="flex h-screen bg-white items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading chat...</p>
@@ -224,7 +226,7 @@ const ChatContent = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen bg-gray-100 items-center justify-center">
+      <div className="flex h-screen bg-white items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading conversations...</p>
@@ -234,30 +236,30 @@ const ChatContent = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden fixed inset-0 font-sans">
+    <div className="flex h-screen bg-gray-50 overflow-hidden fixed inset-0 font-sans">
       {/* Sidebar */}
-      <div className="w-64 bg-gradient-to-b from-slate-900 via-zinc-800 to-gray-800 text-white flex flex-col shadow-lg">
-        <div className="p-4 border-b flex items-center justify-between">
-          <span className="font-bold text-lg">TrendTalks</span>
+      <div className="w-64 bg-white border-r border-gray-200 text-gray-800 flex flex-col shadow-sm">
+        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+          <span className="font-bold text-lg text-gray-800">TrendTalks</span>
           <button
             onClick={() => navigate("/")}
-            className="text-white text-xl font-bold hover:text-red-400 transition"
+            className="text-gray-600 text-xl font-bold hover:text-orange-500 transition"
           >
             ✕
           </button>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col p-2 gap-2 border-b">
+        <div className="flex flex-col p-4 gap-3 border-b border-gray-200">
           <button
             onClick={() => setShowCreateChannelModal(true)}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg transition flex items-center justify-center gap-2"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition flex items-center justify-center gap-2 font-medium"
           >
             ➕ Create Channel
           </button>
           <button
             onClick={() => setShowAddDMModal(true)}
-            className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition flex items-center justify-center gap-2"
+            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg transition flex items-center justify-center gap-2 font-medium border border-gray-300"
           >
             ➕ Add DM
           </button>
@@ -266,71 +268,87 @@ const ChatContent = () => {
         {/* Chat Lists */}
         <div className="flex-1 overflow-y-auto mt-2">
           {/* Channels */}
-          <div className="p-3 text-gray-400 uppercase text-xs">Channels</div>
-          {channels.map((channel) => (
-            <UnreadIndicator
-              key={channel._id}
-              contactId={channel._id}
-              onMarkAsRead={handleMarkAsRead}
-              isSelected={
-                selectedChatType === "channel" &&
-                selectedChatData?._id === channel._id
-              }
-            >
-              <div
-                onClick={() => handleContactSelect(channel, "channel")}
-                className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-700 rounded-lg mx-2 mb-1 truncate ${
+          <div
+            className="p-3 text-gray-500 uppercase text-xs font-semibold cursor-pointer hover:bg-gray-100 rounded mx-2 flex items-center justify-between"
+            onClick={() => setChannelsCollapsed(!channelsCollapsed)}
+          >
+            <span>Channels</span>
+            <span className="text-lg">{channelsCollapsed ? "▶" : "▼"}</span>
+          </div>
+          {!channelsCollapsed &&
+            channels.map((channel) => (
+              <UnreadIndicator
+                key={channel._id}
+                contactId={channel._id}
+                onMarkAsRead={handleMarkAsRead}
+                chatType="channel"
+                isSelected={
                   selectedChatType === "channel" &&
                   selectedChatData?._id === channel._id
-                    ? "bg-orange-500 text-white"
-                    : "text-gray-300"
-                }`}
+                }
               >
-                <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                  #
+                <div
+                  onClick={() => handleContactSelect(channel, "channel")}
+                  className={`flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-100 rounded-lg mx-2 mb-1 truncate transition-colors ${
+                    selectedChatType === "channel" &&
+                    selectedChatData?._id === channel._id
+                      ? "bg-orange-50 text-orange-600 border border-orange-200"
+                      : "text-gray-700"
+                  }`}
+                >
+                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 text-sm font-bold">
+                    #
+                  </div>
+                  <span className="truncate font-medium">{channel.name}</span>
                 </div>
-                <span className="truncate">{channel.name}</span>
-              </div>
-            </UnreadIndicator>
-          ))}
+              </UnreadIndicator>
+            ))}
 
           {/* Direct Messages */}
-          <div className="p-3 text-gray-400 uppercase text-xs mt-4">
-            Direct Messages
+          <div
+            className="p-3 text-gray-500 uppercase text-xs font-semibold mt-4 cursor-pointer hover:bg-gray-100 rounded mx-2 flex items-center justify-between"
+            onClick={() => setDirectMessagesCollapsed(!directMessagesCollapsed)}
+          >
+            <span>Direct Messages</span>
+            <span className="text-lg">
+              {directMessagesCollapsed ? "▶" : "▼"}
+            </span>
           </div>
-          {directMessagesContacts.map((contact) => (
-            <UnreadIndicator
-              key={contact._id}
-              contactId={contact._id}
-              onMarkAsRead={handleMarkAsRead}
-              isSelected={
-                selectedChatType === "contact" &&
-                selectedChatData?._id === contact._id
-              }
-            >
-              <div
-                onClick={() => handleContactSelect(contact, "contact")}
-                className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-700 rounded-lg mx-2 mb-1 ${
+          {!directMessagesCollapsed &&
+            directMessagesContacts.map((contact) => (
+              <UnreadIndicator
+                key={contact._id}
+                contactId={contact._id}
+                onMarkAsRead={handleMarkAsRead}
+                chatType="contact"
+                isSelected={
                   selectedChatType === "contact" &&
                   selectedChatData?._id === contact._id
-                    ? "bg-orange-500 text-white"
-                    : "text-gray-300"
-                }`}
+                }
               >
-                <ProfileImage user={contact} size="w-8 h-8" />
-                <div className="flex flex-col overflow-hidden">
-                  <span className="font-medium truncate">
-                    {getDisplayName(contact)}
-                  </span>
-                  {contact.lastMessage && (
-                    <span className="text-xs text-gray-400 truncate">
-                      {contact.lastMessage.content || "File"}
+                <div
+                  onClick={() => handleContactSelect(contact, "contact")}
+                  className={`flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-100 rounded-lg mx-2 mb-1 transition-colors ${
+                    selectedChatType === "contact" &&
+                    selectedChatData?._id === contact._id
+                      ? "bg-orange-50 text-orange-600 border border-orange-200"
+                      : "text-gray-700"
+                  }`}
+                >
+                  <ProfileImage user={contact} size="w-8 h-8" />
+                  <div className="flex flex-col overflow-hidden">
+                    <span className="font-medium truncate">
+                      {getDisplayName(contact)}
                     </span>
-                  )}
+                    {contact.lastMessage && (
+                      <span className="text-xs text-gray-500 truncate">
+                        {contact.lastMessage.content || "File"}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </UnreadIndicator>
-          ))}
+              </UnreadIndicator>
+            ))}
         </div>
 
         {/* Profile Section */}
@@ -354,7 +372,7 @@ const ChatContent = () => {
             />
 
             {/* Messages */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-1 bg-gray-50">
+            <div className="flex-1 p-4 overflow-y-auto space-y-1 bg-white">
               {selectedChatMessages.map((msg) => (
                 <MessageComponent
                   key={msg._id}
@@ -372,15 +390,15 @@ const ChatContent = () => {
             />
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center bg-gray-50">
+          <div className="flex-1 flex items-center justify-center bg-white">
             <div className="text-center">
-              <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-gray-400 text-3xl">💬</span>
+              <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-orange-200">
+                <span className="text-orange-500 text-3xl">💬</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
                 Welcome to TrendTalks
               </h3>
-              <p className="text-gray-500">
+              <p className="text-gray-600">
                 Select a conversation to start chatting
               </p>
             </div>

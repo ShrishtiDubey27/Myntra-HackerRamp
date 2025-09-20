@@ -10,7 +10,7 @@ import Title from "./Title";
 const features = [
   {
     id: 1,
-    title: "Virtual Try-On",
+    title: "Try Before You Buy",
     description:
       "See how products look on you before buying with AI-powered virtual try-on.",
     icon: <AiOutlineExperiment className="text-5xl text-orange-500" />,
@@ -18,7 +18,7 @@ const features = [
   },
   {
     id: 2,
-    title: "Talk to AI",
+    title: "Style Assistant",
     description:
       "Get instant assistance and recommendations from our smart AI assistant.",
     icon: <AiOutlineRobot className="text-5xl text-orange-500" />,
@@ -26,11 +26,11 @@ const features = [
   },
   {
     id: 3,
-    title: "TrendTalk",
+    title: "TrendTalks",
     description:
       "Stay updated with the latest fashion trends and insights curated for you.",
     icon: <AiOutlineLineChart className="text-5xl text-orange-500" />,
-    link: "/chat", // TrendTalk
+    link: "/chat", // TrendTalks
   },
 ];
 

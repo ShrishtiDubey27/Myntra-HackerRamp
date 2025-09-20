@@ -7,13 +7,13 @@ import OurPolicy from "../components/OurPolicy";
 
 const Home = () => {
   return (
-    <div className="space-y-10 px-4 sm:px-6 lg:px-8">
+    <div className="px-4 sm:px-6 lg:px-8">
       {/* Each section wrapped with rounded shadow */}
       <div className="rounded-lg shadow-md overflow-hidden">
         <Hero />
       </div>
 
-      <div className="rounded-lg shadow-md overflow-hidden">
+      <div className="rounded-lg shadow-md overflow-hidden -mt-5">
         <VirtualTryOn />
       </div>
 

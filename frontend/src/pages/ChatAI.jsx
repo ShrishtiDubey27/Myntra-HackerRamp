@@ -171,7 +171,7 @@ const ChatAI = () => {
     const contextMessages = [...messages, userMessage].slice(-3);
 
     try {
-      const response = await axios.post(`http://localhost:${VITE_BACKEND_PORT}/api/chatAI`, {
+      const response = await axios.post(`http://localhost:5000/api/chatAI`, {
         prompt: input,
         context: contextMessages,
       });

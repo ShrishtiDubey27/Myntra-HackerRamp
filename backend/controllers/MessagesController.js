@@ -70,8 +70,8 @@ export const getUnreadCounts = async (req, res, next) => {
   try {
     const userId = req.userId;
 
-    // Get unread message counts grouped by sender
-    const unreadCounts = await Message.aggregate([
+    // Get unread message counts for direct messages (grouped by sender)
+    const directMessageCounts = await Message.aggregate([
       {
         $match: {
           recipient: userId,
@@ -95,7 +95,14 @@ export const getUnreadCounts = async (req, res, next) => {
       },
     ]);
 
-    return res.status(200).json({ unreadCounts });
+    // For channels, we'll need to track unread messages differently
+    // Since channels don't have specific recipients, we'll get channel messages
+    // and check which ones are newer than the user's last seen timestamp
+
+    // Note: For now, we'll return only direct message counts
+    // Channel unread counts are handled client-side since channels don't have read receipts
+
+    return res.status(200).json({ unreadCounts: directMessageCounts });
   } catch (err) {
     console.log(err);
     return res.status(500).send("Internal Server Error");

@@ -69,23 +69,20 @@ const About = () => {
             Project Information
           </h3>
           <p className="text-gray-700 leading-relaxed text-lg">
-            This project,{" "}
-            <span className="font-semibold text-orange-600">ShopAura</span>, is
-            developed for the
+            <span className="font-semibold text-orange-600">ShopAura</span> is
+            developed for the{" "}
             <span className="font-semibold text-blue-600">
-              {" "}
-              Myntra HackerRamp
+              Myntra HackerRamp WeForShe Hackathon 2025
             </span>{" "}
-            happening on
-            <span className="font-semibold text-purple-600"> Unstop</span>.
-            We've created an innovative e-commerce platform that showcases
-            cutting-edge features like virtual try-on technology, AI-powered
-            recommendations, and seamless user experience design.
+            hosted on{" "}
+            <span className="font-semibold text-purple-600">Unstop</span>. This
+            e-commerce platform features Try Before You Buy technology,
+            AI-powered fashion assistance, and social shopping capabilities.
           </p>
           <p className="text-gray-700 leading-relaxed mt-4">
-            As participants in this prestigious hackathon, we're excited to
-            demonstrate our technical skills and creative problem-solving
-            abilities through this comprehensive shopping platform.
+            The project demonstrates our understanding of modern e-commerce
+            challenges and showcases technical implementation of AI and social
+            features in online shopping.
           </p>
         </div>
       </div>
@@ -94,60 +91,22 @@ const About = () => {
       <div className="bg-gradient-to-r from-orange-50 to-orange-100 py-12 mb-16 rounded-lg mx-4">
         <div className="text-center max-w-4xl mx-auto px-6">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Our Academic Journey
+            Our Academic Background
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            As proud students of the{" "}
+            We are students at{" "}
             <span className="font-semibold text-orange-600">
               Indian Institute of Information Technology Lucknow
             </span>
-            , we are part of the{" "}
-            <span className="font-semibold">2023-2027 batch</span>, where we're
-            pursuing our passion for technology and innovation. Our diverse
-            academic backgrounds in Computer Science and Artificial Intelligence
-            enable us to bring unique perspectives to every project we
-            undertake.
+            , pursuing our B.Tech degrees in the{" "}
+            <span className="font-semibold">2023-2027 batch</span>. Our academic
+            focus in Computer Science and Artificial Intelligence provides the
+            foundation for developing technology-driven solutions.
           </p>
           <p className="text-gray-700 leading-relaxed mt-4">
-            At IIIT Lucknow, we've honed our skills in cutting-edge
-            technologies, machine learning, and software development, which
-            we've applied to create ShopAura - a testament to our commitment to
-            excellence and innovation in the digital space.
-          </p>
-        </div>
-      </div>
-
-      <div className="text-2xl py-4">
-        <Title text1={"WHY"} text2={"CHOOSE US"}></Title>
-      </div>
-
-      <div className="flex flex-col md:flex-row text-sm mb-20">
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Innovation & Technology:</b>
-          <p className="text-gray-600">
-            We leverage cutting-edge AI and machine learning technologies to
-            provide personalized shopping experiences. Our virtual try-on
-            feature and intelligent recommendations set us apart in the
-            e-commerce space.
-          </p>
-        </div>
-
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Student Perspective:</b>
-          <p className="text-gray-600">
-            As students ourselves, we understand the needs of modern consumers.
-            We've built ShopAura with fresh ideas, latest trends, and
-            user-centric design principles that resonate with today's
-            digital-savvy shoppers.
-          </p>
-        </div>
-
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Academic Excellence:</b>
-          <p className="text-gray-600">
-            Our foundation at IIIT Lucknow ensures that every feature is built
-            with precision, research-backed methodologies, and industry best
-            practices. We bring academic rigor to practical solutions.
+            Through our coursework and projects at IIIT Lucknow, we have gained
+            experience in web development, machine learning, and software
+            engineering, which we have applied in building ShopAura.
           </p>
         </div>
       </div>

@@ -96,6 +96,26 @@ const ShopContextProvider = (props) => {
     return totalAmount;
   };
 
+  const clearCart = async () => {
+    setCartItems({});
+
+    // Clear cart on backend if user is logged in
+    if (token) {
+      try {
+        await axios.post(
+          backendUrl + "/api/cart/clear",
+          {},
+          { headers: { token } }
+        );
+        toast.success("Cart cleared successfully");
+      } catch (error) {
+        console.log("Backend cart clear error:", error);
+        toast.error("Failed to clear cart on server");
+        // Continue with local clear even if backend fails
+      }
+    }
+  };
+
   const getProductsData = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/product/list");
@@ -148,11 +168,13 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     if (!token && localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
-      getUserCart(localStorage.getItem("token"));
+    } else if (!localStorage.getItem("token")) {
+      // If no token in localStorage, ensure cart is empty
+      setCartItems({});
     }
   }, []);
 
-  // Fetch cart whenever token changes (after login)
+  // Fetch cart whenever token changes (after login or from localStorage)
   useEffect(() => {
     if (token) {
       getUserCart(token);
@@ -172,6 +194,7 @@ const ShopContextProvider = (props) => {
     getCartCount,
     updateQuantity, // Missing comma here
     getCartAmount,
+    clearCart,
     navigate,
     backendUrl,
     setToken,

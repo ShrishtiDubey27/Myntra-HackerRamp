@@ -29,17 +29,26 @@ const setupSocket = (server) => {
     const recipientSocketId = userSocketMap.get(message.recipient);
     const senderSocketId = userSocketMap.get(message.sender);
 
+    // Prepare message data
+    const messageData = { ...message };
+
+    // Ensure poll data is included if it's a poll message
+    if (message.messageType === "poll" && message.pollId && message.pollData) {
+      messageData.pollId = message.pollId;
+      messageData.pollData = message.pollData;
+    }
+
     // Create the message
-    const createdMessage = await Message.create(message);
+    const createdMessage = await Message.create(messageData);
 
     // Find the created message by its ID and populate sender and recipient details
-    const messageData = await Message.findById(createdMessage._id)
+    const messageResponse = await Message.findById(createdMessage._id)
       .populate("sender", "id email firstName lastName image color name")
       .populate("recipient", "id email firstName lastName image color name")
       .exec();
 
     if (recipientSocketId) {
-      io.to(recipientSocketId).emit("receiveMessage", messageData);
+      io.to(recipientSocketId).emit("receiveMessage", messageResponse);
 
       // Send unread count update to recipient
       const unreadCount = await Message.countDocuments({
@@ -55,24 +64,40 @@ const setupSocket = (server) => {
 
     // Optionally, send the message back to the sender (e.g., for message confirmation)
     if (senderSocketId) {
-      io.to(senderSocketId).emit("receiveMessage", messageData);
+      io.to(senderSocketId).emit("receiveMessage", messageResponse);
     }
   };
 
   const sendChannelMessage = async (message) => {
-    const { channelId, sender, content, messageType, fileUrl } = message;
+    const {
+      channelId,
+      sender,
+      content,
+      messageType,
+      fileUrl,
+      pollId,
+      pollData,
+    } = message;
 
     // Create and save the message
-    const createdMessage = await Message.create({
+    const messageData = {
       sender,
       recipient: null, // Channel messages don't have a single recipient
       content,
       messageType,
       timestamp: new Date(),
       fileUrl,
-    });
+    };
 
-    const messageData = await Message.findById(createdMessage._id)
+    // Add poll-specific fields if it's a poll message
+    if (messageType === "poll" && pollId && pollData) {
+      messageData.pollId = pollId;
+      messageData.pollData = pollData;
+    }
+
+    const createdMessage = await Message.create(messageData);
+
+    const messageResponse = await Message.findById(createdMessage._id)
       .populate("sender", "id email firstName lastName image color name")
       .exec();
 
@@ -84,7 +109,7 @@ const setupSocket = (server) => {
     // Fetch all members of the channel
     const channel = await Channel.findById(channelId).populate("members");
 
-    const finalData = { ...messageData._doc, channelId: channel._id };
+    const finalData = { ...messageResponse._doc, channelId: channel._id };
     if (channel && channel.members) {
       channel.members.forEach((member) => {
         const memberSocketId = userSocketMap.get(member._id.toString());

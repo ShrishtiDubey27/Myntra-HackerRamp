@@ -137,14 +137,16 @@ const ChatHeader = ({ activeChat }) => {
     switch (activeTab) {
       case "Overview":
         return (
-          <div className="flex flex-col items-center gap-4 bg-gray-50 p-4 rounded shadow-inner">
+          <div className="flex flex-col items-center gap-4 bg-white p-6 rounded-lg border border-gray-200">
             <ProfileImage
               user={activeChat}
               size="w-24 h-24"
               showOnlineStatus={activeChat.type !== "channel"}
               className="shadow-lg"
             />
-            <p className="font-bold text-2xl">{activeChat.name}</p>
+            <p className="font-bold text-2xl text-gray-800">
+              {activeChat.name}
+            </p>
             <p className="text-gray-600">
               Created on:{" "}
               {channelData?.channel?.createdAt
@@ -164,11 +166,11 @@ const ChatHeader = ({ activeChat }) => {
             {activeChat.type === "channel" && (
               <div className="w-full">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium">Description</h4>
+                  <h4 className="font-medium text-gray-800">Description</h4>
                   {isUserAdmin() && (
                     <button
                       onClick={() => setEditingDescription(!editingDescription)}
-                      className="text-pink-500 hover:text-pink-600 text-sm"
+                      className="text-orange-500 hover:text-orange-600 text-sm font-medium"
                     >
                       {editingDescription ? "Cancel" : "Edit"}
                     </button>
@@ -181,13 +183,13 @@ const ChatHeader = ({ activeChat }) => {
                       value={newDescription}
                       onChange={(e) => setNewDescription(e.target.value)}
                       placeholder="Enter group description..."
-                      className="w-full p-2 border rounded-md resize-none h-20"
+                      className="w-full p-3 border border-gray-300 rounded-md resize-none h-20 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       maxLength={200}
                     />
                     <div className="flex gap-2">
                       <button
                         onClick={handleUpdateDescription}
-                        className="px-3 py-1 bg-pink-500 text-white rounded text-sm hover:bg-pink-600"
+                        className="px-4 py-2 bg-orange-500 text-white rounded-md text-sm hover:bg-orange-600 transition-colors"
                       >
                         Save
                       </button>
@@ -197,7 +199,7 @@ const ChatHeader = ({ activeChat }) => {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-700 bg-white p-3 rounded-md">
+                  <p className="text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-200">
                     {channelData?.channel?.description ||
                       "No description available"}
                   </p>
@@ -206,14 +208,14 @@ const ChatHeader = ({ activeChat }) => {
             )}
 
             {activeChat.type === "channel" && (
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-3 mt-4">
                 <button
                   onClick={handleLeaveGroup}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 shadow-md"
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors shadow-sm"
                 >
                   Exit Group
                 </button>
-                <button className="bg-blue-200 text-blue-800 px-4 py-2 rounded hover:bg-blue-300 shadow-md">
+                <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors shadow-sm border border-gray-300">
                   Report Group
                 </button>
               </div>
@@ -227,16 +229,18 @@ const ChatHeader = ({ activeChat }) => {
             ? channelData?.channel?.members || channelData?.members || []
             : [activeChat];
         return (
-          <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto bg-gray-50 p-2 rounded">
+          <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto bg-white p-2 rounded-lg">
             {members.length === 0 ? (
               <p className="text-gray-500 text-center py-4">No members found</p>
             ) : (
               members.map((member, idx) => (
                 <div
                   key={member._id}
-                  className={`flex justify-between items-center gap-3 p-3 rounded-lg shadow-md transition-shadow ${
-                    idx % 2 === 0 ? "bg-white" : "bg-gray-100"
-                  } hover:shadow-xl`}
+                  className={`flex justify-between items-center gap-3 p-3 rounded-lg shadow-sm transition-shadow border ${
+                    idx % 2 === 0
+                      ? "bg-white border-gray-200"
+                      : "bg-gray-50 border-gray-100"
+                  } hover:shadow-md`}
                 >
                   <div className="flex items-center gap-3">
                     <ProfileImage
@@ -252,7 +256,7 @@ const ChatHeader = ({ activeChat }) => {
                         {member._id ===
                           (channelData?.channel?.admin?._id ||
                             channelData?.admin?._id) && (
-                          <span className="ml-2 px-2 py-0.5 bg-pink-100 text-pink-700 text-xs rounded-full">
+                          <span className="ml-2 px-2 py-0.5 bg-orange-100 text-orange-600 text-xs rounded-full font-medium">
                             Admin
                           </span>
                         )}
@@ -457,16 +461,16 @@ const ChatHeader = ({ activeChat }) => {
 
       {showHeaderMenu && (
         <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40">
-          <div className="bg-gray-100 w-[60vw] h-[60vh] rounded-lg shadow-2xl flex relative">
-            <div className="w-36 bg-gray-300 p-4 flex flex-col gap-2 rounded-l-lg shadow-inner">
+          <div className="bg-white w-[60vw] h-[60vh] rounded-lg shadow-2xl flex relative border border-gray-200">
+            <div className="w-36 bg-gray-50 p-4 flex flex-col gap-2 rounded-l-lg border-r border-gray-200">
               {["Overview", "Members", "Media", "Links"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`text-left p-2 rounded hover:bg-gray-400 ${
+                  className={`text-left p-3 rounded-md hover:bg-orange-50 transition-colors ${
                     activeTab === tab
-                      ? "bg-gray-400 font-semibold text-white"
-                      : "text-gray-800"
+                      ? "bg-orange-500 font-semibold text-white"
+                      : "text-gray-700 hover:text-orange-600"
                   }`}
                 >
                   {tab}
@@ -474,11 +478,13 @@ const ChatHeader = ({ activeChat }) => {
               ))}
             </div>
 
-            <div className="flex-1 p-6 overflow-y-auto">{renderContent()}</div>
+            <div className="flex-1 p-6 overflow-y-auto bg-white">
+              {renderContent()}
+            </div>
 
             <button
               onClick={() => setShowHeaderMenu(false)}
-              className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 font-bold text-lg"
+              className="absolute top-3 right-3 text-gray-600 hover:text-orange-500 font-bold text-lg transition-colors"
             >
               ✕
             </button>

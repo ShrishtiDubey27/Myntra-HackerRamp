@@ -28,7 +28,7 @@ const ScrollToTop = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // Reset virtual try-on state when navigating away from Collection or Wishlist page
+    // Reset Try Before You Buy state when navigating away from Collection or Wishlist page
     if (pathname !== "/collection" && pathname !== "/wishlist") {
       sessionStorage.removeItem("activeModelId");
       // Trigger storage event to update all ProductItem components

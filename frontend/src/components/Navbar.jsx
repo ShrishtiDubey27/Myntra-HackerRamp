@@ -71,11 +71,11 @@ const Navbar = () => {
             onClick={handleChatClick}
             src={assets.chat_icon}
             className="w-5 cursor-pointer hover:scale-110 transition-transform"
-            alt="TrendTalk - Direct Messages"
-            title="TrendTalk - Direct Messages"
+            alt="TrendTalks - Direct Messages"
+            title="TrendTalks - Direct Messages"
           />
           <div className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            TrendTalk
+            TrendTalks
           </div>
         </div>
 
@@ -211,7 +211,7 @@ const Navbar = () => {
             }}
             className="py-2 pl-6 border cursor-pointer hover:bg-gray-50"
           >
-            TRENTTALK
+            TRENDTALKS
           </div>
         </div>
       </div>

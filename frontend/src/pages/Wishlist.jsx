@@ -30,7 +30,7 @@ const Wishlist = () => {
   const [activatedTryOn, setActivatedTryOn] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Share to TrendTalk states
+  // Share to TrendTalks states
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareImageData, setShareImageData] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -123,10 +123,10 @@ const Wishlist = () => {
     window.dispatchEvent(new Event("storage"));
   };
 
-  // Share to TrendTalk functions
+  // Share to TrendTalks functions
   const handleShareClick = (productId, productName) => {
     if (!chatUser) {
-      toast.error("Please login to TrendTalk first!");
+      toast.error("Please login to TrendTalks first!");
       return;
     }
 
@@ -428,7 +428,7 @@ const Wishlist = () => {
           </div>
 
           {/* Wishlist Items */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
             {wishlistItems.map((item, index) => (
               <div key={index} className="relative">
                 <ProductItem
@@ -445,12 +445,12 @@ const Wishlist = () => {
                   }
                 />
 
-                {/* Share to TrendTalk Button - Only show when virtual try-on is active */}
+                {/* Share to TrendTalks Button - Only show when virtual try-on is active */}
                 {tryOnMode && activatedTryOn && (
                   <button
                     onClick={() => handleShareClick(item._id, item.name)}
                     className="absolute bottom-2 right-2 bg-orange-500 text-white p-2 rounded-full shadow-lg hover:bg-orange-600 transition-all duration-300 opacity-90 hover:opacity-100"
-                    title="Share to TrendTalk"
+                    title="Share to TrendTalks"
                   >
                     <svg
                       className="w-4 h-4"

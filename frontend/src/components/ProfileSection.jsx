@@ -18,8 +18,8 @@ const ProfileSection = () => {
   };
 
   return (
-    <div className="border-t border-gray-600 p-3">
-      <div className="flex items-center gap-3 p-2 rounded-lg">
+    <div className="border-t border-gray-200 p-3 bg-gray-50">
+      <div className="flex items-center gap-3 p-2 rounded-lg bg-white border border-gray-200">
         <ProfileImage
           user={chatUser}
           size="w-10 h-10"
@@ -27,10 +27,10 @@ const ProfileSection = () => {
         />
 
         <div className="flex-1 overflow-hidden">
-          <p className="text-white font-medium text-sm truncate">
+          <p className="text-gray-800 font-medium text-sm truncate">
             {getDisplayName()}
           </p>
-          <p className="text-gray-400 text-xs truncate">{chatUser.email}</p>
+          <p className="text-gray-500 text-xs truncate">{chatUser.email}</p>
         </div>
       </div>
     </div>

@@ -82,7 +82,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
           <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
             <div className="flex items-center space-x-3">
               <div className="flex-shrink-0">
-                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
                   <span className="text-white text-sm">📄</span>
                 </div>
               </div>
@@ -121,18 +121,20 @@ const MessageComponent = ({ message, isChannel = false }) => {
         // Render poll component
         const pollDataWithId = {
           ...message.pollData,
-          _id: message.pollId || message.pollData?._id
+          _id: message.pollId || message.pollData?._id,
         };
-        
+
         return (
           <PollComponent
             poll={pollDataWithId}
             onVote={(updatedPoll) => {
               // Handle poll vote updates
-              console.log('Poll updated:', updatedPoll);
+              console.log("Poll updated:", updatedPoll);
             }}
             backendUrl={backendUrl}
-            userToken={localStorage.getItem('chatToken') || localStorage.getItem('token')}
+            userToken={
+              localStorage.getItem("chatToken") || localStorage.getItem("token")
+            }
             currentUserId={chatUser?.id}
           />
         );
@@ -166,7 +168,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
         <div
           className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg relative ${
             isOwnMessage
-              ? "bg-blue-500 text-white"
+              ? "bg-orange-500 text-white"
               : "bg-gray-200 text-gray-800"
           }`}
         >
@@ -185,7 +187,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
           {/* Message time and status */}
           <div
             className={`flex items-center justify-end space-x-1 text-xs ${
-              isOwnMessage ? "text-blue-100" : "text-gray-500"
+              isOwnMessage ? "text-orange-100" : "text-gray-500"
             }`}
           >
             <span>{formatTime(message.timestamp)}</span>
@@ -196,7 +198,7 @@ const MessageComponent = ({ message, isChannel = false }) => {
           <div
             className={`absolute top-2 ${
               isOwnMessage
-                ? "right-0 transform translate-x-1 border-l-8 border-l-blue-500 border-t-8 border-t-transparent border-b-8 border-b-transparent"
+                ? "right-0 transform translate-x-1 border-l-8 border-l-orange-500 border-t-8 border-t-transparent border-b-8 border-b-transparent"
                 : "left-0 transform -translate-x-1 border-r-8 border-r-gray-200 border-t-8 border-t-transparent border-b-8 border-b-transparent"
             }`}
           />

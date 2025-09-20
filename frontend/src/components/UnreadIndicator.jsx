@@ -8,6 +8,7 @@ const UnreadIndicator = ({
   children,
   onMarkAsRead,
   isSelected = false,
+  chatType = "contact", // Add chatType prop with default
 }) => {
   const { unreadCounts, markChatAsRead } = useContext(ChatContext);
   const [localCount, setLocalCount] = useState(0);
@@ -22,15 +23,15 @@ const UnreadIndicator = ({
   // Clear count when chat is selected
   useEffect(() => {
     if (isSelected && localCount > 0) {
-      markChatAsRead(contactId);
+      markChatAsRead(contactId, chatType);
       setLocalCount(0);
     }
-  }, [isSelected, contactId, markChatAsRead, localCount]);
+  }, [isSelected, contactId, markChatAsRead, localCount, chatType]);
 
   const handleContactClick = () => {
     // When contact is clicked, mark messages as read
     if (localCount > 0) {
-      markChatAsRead(contactId);
+      markChatAsRead(contactId, chatType);
       setLocalCount(0);
       if (onMarkAsRead) {
         onMarkAsRead(contactId);

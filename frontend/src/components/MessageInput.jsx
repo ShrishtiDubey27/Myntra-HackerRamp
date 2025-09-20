@@ -209,8 +209,8 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
       {/* Voice Recorder Modal */}
       {showVoiceRecorder && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4 text-center">
+          <div className="bg-white rounded-lg p-6 max-w-md mx-4 border border-gray-200 shadow-xl">
+            <h3 className="text-lg font-semibold mb-4 text-center text-gray-800">
               Record Voice Message
             </h3>
             <VoiceRecorder
@@ -229,12 +229,12 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
       )}
 
       {/* Message Input Container */}
-      <div className="h-[10vh] bg-gray-50 flex justify-center items-center px-8 mb-6 gap-6">
-        <div className="flex-1 flex bg-white rounded-md items-center gap-5 pr-5">
+      <div className="h-[10vh] bg-white flex justify-center items-center px-8 mb-6 gap-6 border-t border-gray-200">
+        <div className="flex-1 flex bg-gray-50 rounded-lg items-center gap-5 pr-5 border border-gray-300 focus-within:border-orange-500 transition-colors">
           {/* Emoji Button */}
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all p-2 hover:text-yellow-500"
+            className="text-gray-500 focus:border-none focus:outline-none hover:text-orange-500 duration-300 transition-all p-2"
           >
             😊
           </button>
@@ -242,7 +242,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
           {/* Text Input */}
           <input
             type="text"
-            className="flex-1 p-5 bg-transparent rounded-md focus:border-none focus:outline-none"
+            className="flex-1 p-5 bg-transparent rounded-md focus:border-none focus:outline-none text-gray-800 placeholder-gray-500"
             placeholder="Enter Message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -253,7 +253,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
           {/* File Upload Button */}
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all p-2 hover:text-blue-500"
+            className="text-gray-500 focus:border-none focus:outline-none hover:text-orange-500 duration-300 transition-all p-2"
             disabled={isUploading}
           >
             📎
@@ -262,7 +262,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
           {/* Voice Recording Button */}
           <button
             onClick={() => setShowVoiceRecorder(true)}
-            className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all p-2 hover:text-green-500"
+            className="text-gray-500 focus:border-none focus:outline-none hover:text-orange-500 duration-300 transition-all p-2"
             disabled={isUploading}
             title="Record Voice Message"
           >
@@ -272,7 +272,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
           {/* Create Poll Button */}
           <button
             onClick={() => setShowCreatePoll(true)}
-            className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all p-2 hover:text-purple-500"
+            className="text-gray-500 focus:border-none focus:outline-none hover:text-orange-500 duration-300 transition-all p-2"
             disabled={isUploading}
             title="Create Fashion Poll"
           >
@@ -281,7 +281,7 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
 
           {/* Send Button */}
           <button
-            className="bg-blue-500 rounded-md flex items-center justify-center p-3 hover:bg-blue-600 focus:bg-blue-700 focus:border-none focus:outline-none focus:text-white duration-300 transition-all"
+            className="bg-orange-500 rounded-md flex items-center justify-center p-3 hover:bg-orange-600 focus:bg-orange-700 focus:border-none focus:outline-none focus:text-white duration-300 transition-all shadow-sm"
             onClick={handleSendMessage}
             disabled={isUploading}
           >
@@ -301,8 +301,8 @@ const MessageInput = ({ selectedChatData, selectedChatType }) => {
 
       {/* Upload Progress Indicator */}
       {isUploading && (
-        <div className="absolute top-0 left-0 right-0 bg-blue-500 h-1">
-          <div className="h-full bg-blue-700 animate-pulse"></div>
+        <div className="absolute top-0 left-0 right-0 bg-orange-500 h-1">
+          <div className="h-full bg-orange-600 animate-pulse"></div>
         </div>
       )}
 

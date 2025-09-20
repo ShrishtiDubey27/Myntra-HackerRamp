@@ -80,7 +80,7 @@ const ProductItem = ({
     >
       <div className="overflow-hidden relative group">
         <img
-          className="hover:scale-105 duration-300 hover:border-[10px] border-transparent hover:border-orange-600"
+          className="hover:scale-105 duration-300 hover:border-[10px] border-transparent hover:border-orange-600 w-full h-72 object-cover"
           src={getDisplayImage()}
           alt={name}
         />

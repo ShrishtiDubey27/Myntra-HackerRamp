@@ -37,7 +37,11 @@ app.use(express.json());
 app.use(cookieParser()); // Added for chat JWT authentication
 app.use(
   cors({
-    origin: [process.env.ORIGIN], // You must set this in your .env
+    origin: [
+      "http://localhost:5173", // Frontend
+      "http://localhost:5174", // Admin panel
+      process.env.ORIGIN || "http://localhost:5173", // Fallback
+    ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
